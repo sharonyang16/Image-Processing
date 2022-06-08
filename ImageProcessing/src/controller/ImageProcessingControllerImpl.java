@@ -100,7 +100,18 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
       }
       else {
         c = cmd.apply(input);
-        c.execute(model);
+        try {
+          c.execute(model);
+        }
+        catch (IllegalArgumentException e) {
+          try {
+            this.view.renderMessage("Command unsuccessful! " + e.getMessage());
+          }
+          catch (IOException ex) {
+
+          }
+        }
+
         try {
           this.view.renderMessage("Command successful!");
         }

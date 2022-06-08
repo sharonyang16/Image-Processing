@@ -15,4 +15,5 @@ public interface Pixel {
 
   void adjustBrightness(int value);
 
+  Pixel getCopy();
 }

@@ -12,7 +12,7 @@ public class Load implements ImageProcessingCommand {
   }
 
   @Override
-  public void execute(ImageProcessingModel model) {
+  public void execute(ImageProcessingModel model) throws IllegalArgumentException {
     model.loadFile(filePath, name);
   }
 }

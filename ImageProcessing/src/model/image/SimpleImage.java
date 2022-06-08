@@ -67,7 +67,14 @@ public class SimpleImage implements Image {
 
   @Override
   public Image getCopy() {
-    return new SimpleImage(
-            (ArrayList<ArrayList<Pixel>>) this.image.clone());
+    ArrayList<ArrayList<Pixel>> copied = new ArrayList<ArrayList<Pixel>>();
+    for (int i = 0; i < this.getHeight(); i++) {
+      ArrayList<Pixel> row = new ArrayList<Pixel>();
+      for (int j = 0; j < this.getWidth(); j = j + 1) {
+        row.add(this.image.get(i).get(j).getCopy());
+      }
+      copied.add(row);
+    }
+    return new SimpleImage(copied);
   }
 }

@@ -18,7 +18,7 @@ public class ImageCommand implements ImageProcessingCommand {
     this.op = op;
   }
 
-  public void execute(ImageProcessingModel model) {
+  public void execute(ImageProcessingModel model) throws IllegalArgumentException {
     model.performAndSaveAs(originalName, newName, op);
   }
 

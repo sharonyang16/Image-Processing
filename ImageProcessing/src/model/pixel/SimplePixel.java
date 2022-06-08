@@ -56,4 +56,8 @@ public class SimplePixel implements Pixel {
     }
   }
 
+  @Override
+  public Pixel getCopy() {
+    return new SimplePixel(components[0], components[1], components[2]);
+  }
 }

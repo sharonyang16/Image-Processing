@@ -11,7 +11,7 @@ public class Save implements ImageProcessingCommand {
     this.name = name;
   }
   @Override
-  public void execute(ImageProcessingModel model) {
+  public void execute(ImageProcessingModel model) throws IllegalArgumentException {
     model.saveAs(filePath, name);
   }
 }
