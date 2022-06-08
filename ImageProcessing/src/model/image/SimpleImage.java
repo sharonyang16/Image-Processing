@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import model.image.operations.ImageOperation;
 import model.pixel.Pixel;
 
-public class SimpleImage implements Image {
+public class SimpleImage implements MyImage {
   private ArrayList<ArrayList<Pixel>> image;
 
   public SimpleImage(ArrayList<ArrayList<Pixel>> image) throws IllegalArgumentException {
@@ -66,7 +66,7 @@ public class SimpleImage implements Image {
   }
 
   @Override
-  public Image getCopy() {
+  public MyImage getCopy() {
     ArrayList<ArrayList<Pixel>> copied = new ArrayList<ArrayList<Pixel>>();
     for (int i = 0; i < this.getHeight(); i++) {
       ArrayList<Pixel> row = new ArrayList<Pixel>();

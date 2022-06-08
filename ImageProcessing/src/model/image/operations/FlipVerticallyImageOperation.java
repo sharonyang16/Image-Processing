@@ -1,11 +1,11 @@
 package model.image.operations;
 
-import model.image.Image;
+import model.image.MyImage;
 
 public class FlipVerticallyImageOperation implements ImageOperation {
 
   @Override
-  public void execute(Image image) {
+  public void execute(MyImage image) {
     image.flipVertically();
   }
 }

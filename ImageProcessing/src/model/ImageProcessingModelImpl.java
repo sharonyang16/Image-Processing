@@ -8,17 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import model.image.Image;
+import model.image.MyImage;
 import model.image.SimpleImage;
 import model.image.operations.ImageOperation;
 import model.pixel.Pixel;
 import model.pixel.SimplePixel;
 
 public class ImageProcessingModelImpl implements ImageProcessingModel {
-  private Map<String, Image> images;
+  private Map<String, MyImage> images;
 
   public ImageProcessingModelImpl() {
-    this.images = new HashMap<String, Image>();
+    this.images = new HashMap<String, MyImage>();
   }
 
   @Override
@@ -26,7 +26,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     this.images.put(name, this.processImage(fileName));
   }
 
-  private Image processImage(String fileName) throws IllegalArgumentException {
+  private MyImage processImage(String fileName) throws IllegalArgumentException {
     if (fileName.endsWith(".ppm")) {
       return this.processPPM(fileName);
     }
@@ -35,7 +35,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
   }
 
-  private Image processPPM(String fileName) throws IllegalArgumentException {
+  private MyImage processPPM(String fileName) throws IllegalArgumentException {
     Scanner scan;
 
     try {
@@ -80,7 +80,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       }
       imageList.add(row);
     }
-    Image image = new SimpleImage(imageList);
+    MyImage image = new SimpleImage(imageList);
 
     return image;
   }
@@ -88,13 +88,13 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   @Override
   public void performAndSaveAs(String originalName, String newName, ImageOperation op)
           throws IllegalArgumentException {
-    Image image = this.images.getOrDefault(originalName, null);
+    MyImage image = this.images.getOrDefault(originalName, null);
 
     if (image == null) {
       throw new IllegalArgumentException();
     }
     else {
-      Image newImage = image.getCopy();
+      MyImage newImage = image.getCopy();
       newImage.accept(op);
 
       this.images.put(newName, newImage);
@@ -121,7 +121,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       throw new IllegalArgumentException("Error creating file named " + fileName);
     }
 
-    Image image = this.images.getOrDefault(name, null);
+    MyImage image = this.images.getOrDefault(name, null);
 
     if (image == null) {
       throw new IllegalArgumentException("Image not found.");

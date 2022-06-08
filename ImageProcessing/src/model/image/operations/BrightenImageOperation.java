@@ -1,6 +1,6 @@
 package model.image.operations;
 
-import model.image.Image;
+import model.image.MyImage;
 import model.pixel.operations.BrightenPixelOperation;
 
 public class BrightenImageOperation extends AbstractImageOperation{
@@ -12,7 +12,7 @@ public class BrightenImageOperation extends AbstractImageOperation{
 
 
   @Override
-  public void execute(Image image) {
+  public void execute(MyImage image) {
     helpExecute(image, new BrightenPixelOperation(value));
   }
 }

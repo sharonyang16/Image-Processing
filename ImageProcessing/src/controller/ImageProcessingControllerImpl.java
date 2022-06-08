@@ -153,10 +153,13 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
               "flip-horizontally image-name new-name " +
                       "(flips the image horizontally and calls it by the new name)");
       this.view.renderMessage(
+              "flip-vertically image-name new-name " +
+                      "(flips the image vertically and calls it by the new name)");
+      this.view.renderMessage(
               "brighten image-name new-name value" +
                       "(brightens the image by the given value and calls it by the new name)");
       this.view.renderMessage(
-              "darkens image-name new-name value" +
+              "darken image-name new-name value" +
                       "(darkens the image by the given value and calls it by the new name)");
       this.view.renderMessage(
               "save file-path image-name (saves the image into the file path)");

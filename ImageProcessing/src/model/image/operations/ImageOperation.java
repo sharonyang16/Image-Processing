@@ -1,7 +1,7 @@
 package model.image.operations;
 
-import model.image.Image;
+import model.image.MyImage;
 
 public interface ImageOperation {
-  void execute(Image image);
+  void execute(MyImage image);
 }

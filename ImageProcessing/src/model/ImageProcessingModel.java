@@ -1,6 +1,5 @@
 package model;
 
-import model.image.Image;
 import model.image.operations.ImageOperation;
 
 public interface ImageProcessingModel {

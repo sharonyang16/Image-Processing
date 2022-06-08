@@ -10,7 +10,7 @@ public class ImageProcessingViewImpl implements ImageProcessingView {
 
   public ImageProcessingViewImpl(ImageProcessingModel model, Appendable out)
           throws IllegalArgumentException {
-    // exception
+
     this.model = model;
     this.out = out;
   }

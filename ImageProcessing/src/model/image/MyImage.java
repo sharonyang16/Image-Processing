@@ -3,7 +3,7 @@ package model.image;
 import model.image.operations.ImageOperation;
 import model.pixel.Pixel;
 
-public interface Image {
+public interface MyImage {
   void accept(ImageOperation o);
 
   int getHeight();
@@ -16,6 +16,6 @@ public interface Image {
 
   void flipVertically();
 
-  Image getCopy();
+  MyImage getCopy();
 }
 
