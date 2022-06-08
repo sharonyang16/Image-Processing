@@ -23,7 +23,7 @@ public class SimpleImage implements Image {
 
   @Override
   public void accept(ImageOperation o) {
-
+    o.execute(this);
   }
 
   @Override

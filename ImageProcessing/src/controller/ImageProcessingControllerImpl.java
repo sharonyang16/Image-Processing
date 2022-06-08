@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import java.util.function.Function;
 import controller.commands.ImageCommand;
 import controller.commands.ImageProcessingCommand;
 import controller.commands.Load;
+import controller.commands.Save;
 import model.ImageProcessingModel;
 import model.image.operations.BlueGreyscaleImageOperation;
 import model.image.operations.BrightenImageOperation;
@@ -64,28 +66,48 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
     this.knownCommands.put("darken",
             (Scanner s) -> {return new ImageCommand(
                     s.next(), s.next(), new DarkenImageOperation(s.nextInt()));});
+    this.knownCommands.put("save",
+            (Scanner s) -> {return new Save(s.next(), s.next());});
   }
 
   @Override
   public void execute() {
+    this.printMenu();
     while(input.hasNext()) {
       ImageProcessingCommand c;
       String in = input.next();
 
       if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
-        this.view.renderMessage("Goodbye!");
+        try {
+          this.view.renderMessage("Thanks for using this program! Goodbye!");
+        }
+        catch(IOException e) {
+
+        }
         return;
       }
 
       Function<Scanner, ImageProcessingCommand> cmd = knownCommands.getOrDefault(in, null);
 
       if (cmd == null) {
-        this.view.renderMessage("Invalid command; try again.");
+        try {
+          this.view.renderMessage("Invalid command; try again.");
+        }
+        catch(IOException e) {
+
+        }
+
       }
       else {
         c = cmd.apply(input);
         c.execute(model);
-        this.view.renderMessage("Command successful!");
+        try {
+          this.view.renderMessage("Command successful!");
+        }
+        catch (IOException e) {
+
+        }
+
       }
     }
   }
@@ -94,7 +116,45 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
    * Prints a menu of options for the user to input.
    */
   private void printMenu() {
+    try {
+      this.view.renderMessage("Menu");
+      this.view.renderMessage(
+              "load file-path image-name (load an image into this program and call it as the name)");
+      this.view.renderMessage(
+              "red-greyscale image-name new-name (greyscales the image using "
+                      + "the red component and calls it by the new name)");
+      this.view.renderMessage(
+              "green-greyscale image-name new-name (greyscales the image using "
+                      + "the green component and calls it by the new name)");
+      this.view.renderMessage(
+              "blue-greyscale image-name new-name (greyscales the image using "
+                      + "the blue component and calls it by the new name)");
+      this.view.renderMessage(
+              "value-greyscale image-name new-name (greyscales the image using "
+                      + "the value component and calls it by the new name)");
+      this.view.renderMessage(
+              "intensity-greyscale image-name new-name (greyscales the image using "
+                      + "the intensity component and calls it by the new name)");
+      this.view.renderMessage(
+              "luma-greyscale image-name new-name (greyscales the image using "
+                      + "the luma component and calls it by the new name)");
+      this.view.renderMessage(
+              "flip-horizontally image-name new-name " +
+                      "(flips the image horizontally and calls it by the new name)");
+      this.view.renderMessage(
+              "brighten image-name new-name value" +
+                      "(brightens the image by the given value and calls it by the new name)");
+      this.view.renderMessage(
+              "darkens image-name new-name value" +
+                      "(darkens the image by the given value and calls it by the new name)");
+      this.view.renderMessage(
+              "save file-path image-name (saves the image into the file path)");
+      this.view.renderMessage(
+              "q or quit (quits this program)");
+    }
+    catch (IOException e) {
 
+    }
   }
 
 }

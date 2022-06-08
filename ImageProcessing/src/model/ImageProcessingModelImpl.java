@@ -22,7 +22,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
-  public void loadFile(String name, String fileName) throws IllegalArgumentException {
+  public void loadFile(String fileName, String name) throws IllegalArgumentException {
     this.images.put(name, this.processImage(fileName));
   }
 

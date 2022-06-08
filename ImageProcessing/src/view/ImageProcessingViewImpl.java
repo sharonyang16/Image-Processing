@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import model.ImageProcessingModel;
 
-public class ImageProcessingViewImpl {
+public class ImageProcessingViewImpl implements ImageProcessingView {
   private ImageProcessingModel model;
   private Appendable out;
 
@@ -16,7 +16,7 @@ public class ImageProcessingViewImpl {
   }
 
   public void renderMessage(String message) throws IOException {
-    out.append(message);
+    out.append(message + "\n");
   }
 }
 
