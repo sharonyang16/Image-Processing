@@ -64,4 +64,10 @@ public class SimpleImage implements Image {
       }
     }
   }
+
+  @Override
+  public Image getCopy() {
+    return new SimpleImage(
+            (ArrayList<ArrayList<Pixel>>) this.image.clone());
+  }
 }
