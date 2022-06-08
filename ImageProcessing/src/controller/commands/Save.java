@@ -12,6 +12,6 @@ public class Save implements ImageProcessingCommand {
   }
   @Override
   public void execute(ImageProcessingModel model) {
-
+    model.saveAs(filePath, name);
   }
 }

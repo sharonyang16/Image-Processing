@@ -2,6 +2,7 @@ package model;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -98,5 +99,44 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
       this.images.put(newName, newImage);
     }
+  }
+
+  @Override
+  public void saveAs(String fileName, String name) throws IllegalArgumentException {
+    if (fileName.endsWith(".ppm")) {
+      this.saveAsPPM(fileName, name);
+    }
+    else {
+      throw new IllegalArgumentException("Unsupported file type!");
+    }
+
+  }
+
+  private void saveAsPPM(String fileName, String name) throws IllegalArgumentException {
+    PrintWriter writer;
+    try {
+      writer = new PrintWriter(fileName);
+    }
+    catch(FileNotFoundException e) {
+      throw new IllegalArgumentException("Error creating file named " + fileName);
+    }
+
+    Image image = this.images.getOrDefault(name, null);
+
+    if (image == null) {
+      throw new IllegalArgumentException("Image not found.");
+    }
+    writer.println("P3");
+    writer.println("# ");
+    writer.println(image.getWidth() + " " + image.getHeight());
+
+    for (int i = 0; i < image.getHeight(); i++) {
+      for (int j = 0; j < image.getWidth(); j++) {
+        Pixel curPixel = image.getPixelAt(i, j);
+        writer.println(curPixel.getRed() + " " + curPixel.getGreen() + " " + curPixel.getBlue());
+      }
+    }
+
+    writer.close();
   }
 }
