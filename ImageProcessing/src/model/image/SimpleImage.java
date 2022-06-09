@@ -5,18 +5,29 @@ import java.util.ArrayList;
 import model.image.operations.ImageOperation;
 import model.pixel.Pixel;
 
+/**
+ * This class represents an image with operations allowing it to be mutated.
+ */
 public class SimpleImage implements MyImage {
   private ArrayList<ArrayList<Pixel>> image;
 
+  /**
+   * Creates a simple image with the given 2D ArrayList representing an image. Throws an exception
+   * if the given 2D ArrayList is null, is empty, or the ArrayLists inside the outer ArrayList is
+   * empty.
+   *
+   * @param image the 2D array representing the desired image
+   * @throws IllegalArgumentException if the given 2D ArrayList is invalid
+   */
   public SimpleImage(ArrayList<ArrayList<Pixel>> image) throws IllegalArgumentException {
     if (image == null) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Image cannot be null!");
     }
     if (image.size() == 0) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Image cannot have no height!");
     }
     if (image.get(0).size() == 0) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Image cannot have no width!");
     }
     this.image = image;
   }

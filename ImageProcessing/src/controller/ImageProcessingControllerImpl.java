@@ -23,14 +23,34 @@ import model.image.operations.RedGreyscaleImageOperation;
 import model.image.operations.ValueGreyscaleImageOperation;
 import view.ImageProcessingView;
 
+/**
+ * This class represents an implementation of a controller for an image processing application. It
+ * specifically implements the ImageProcessingController interface. Currently supports the following
+ * commands: load, red-greyscale, green-greyscale, blue-greyscale, value-greyscale,
+ * intensity-greyscale, luma-greyscale, flip-horizontally, flip-vertically, brighten, darken,
+ * and save.
+ */
 public class ImageProcessingControllerImpl implements ImageProcessingController {
   private ImageProcessingModel model;
   private ImageProcessingView view;
   private Map<String, Function<Scanner, ImageProcessingCommand>> knownCommands;
   private Scanner input;
 
-  public ImageProcessingControllerImpl(ImageProcessingModel model,
-                                       ImageProcessingView view, Readable in) throws IllegalArgumentException {
+  /**
+   * Creates a controller with the given model, view and scanner with the given Readable object.
+   * Additionally, a container of known commands is initialized.
+   *
+   * @param model
+   * @param view
+   * @param in
+   * @throws IllegalArgumentException if any of the parameters are null
+   */
+  public ImageProcessingControllerImpl(
+          ImageProcessingModel model, ImageProcessingView view, Readable in)
+          throws IllegalArgumentException {
+    if (model == null || view == null || in == null) {
+      throw new IllegalArgumentException("Model, view, and Readable object cannot be null!");
+    }
     this.model = model;
     this.view = view;
     this.input = new Scanner(in);
@@ -70,19 +90,29 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
             (Scanner s) -> {return new Save(s.next(), s.next());});
   }
 
+  /**
+   * Executes this image processing application. The user is able to execute from the list of known
+   * commands and is also able to quit the application by entering 'q' or "quit". A menu containing
+   * how to enter these commands is displayed at the start of this method. This method continues to
+   * run until it runs out of inputs, the user decides to quit, or an exception is thrown due to the
+   * program being unable to transmit a message.
+   *
+   * @throws IllegalStateException if transmission fails
+   */
   @Override
-  public void execute() {
+  public void execute() throws IllegalStateException {
     this.printMenu();
     while(input.hasNext()) {
       ImageProcessingCommand c;
       String in = input.next();
 
+      // if 'q' or "quit" is entered, end the method
       if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
         try {
           this.view.renderMessage("Thanks for using this program! Goodbye!");
         }
         catch(IOException e) {
-
+          throw new IllegalStateException("Failed to transmit message");
         }
         return;
       }
@@ -94,7 +124,7 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
           this.view.renderMessage("Invalid command; try again.");
         }
         catch(IOException e) {
-
+          throw new IllegalStateException("Failed to transmit message");
         }
 
       }
@@ -108,7 +138,7 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
             this.view.renderMessage("Command unsuccessful! " + e.getMessage());
           }
           catch (IOException ex) {
-
+            throw new IllegalStateException("Failed to transmit message");
           }
         }
 
@@ -116,7 +146,7 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
           this.view.renderMessage("Command successful!");
         }
         catch (IOException e) {
-
+          throw new IllegalStateException("Failed to transmit message");
         }
 
       }
@@ -124,13 +154,16 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
   }
 
   /**
-   * Prints a menu of options for the user to input.
+   * Renders a menu containing information about the known commands for the user to see.
+   *
+   * @throws IllegalStateException if transmission fails
    */
-  private void printMenu() {
+  private void printMenu() throws IllegalStateException {
     try {
       this.view.renderMessage("Menu");
       this.view.renderMessage(
-              "load file-path image-name (load an image into this program and call it as the name)");
+              "load file-path image-name"
+                      + "(load an image into this program and call it as the name)");
       this.view.renderMessage(
               "red-greyscale image-name new-name (greyscales the image using "
                       + "the red component and calls it by the new name)");
@@ -167,7 +200,7 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
               "q or quit (quits this program)");
     }
     catch (IOException e) {
-
+      throw new IllegalStateException("Failed to transmit message");
     }
   }
 

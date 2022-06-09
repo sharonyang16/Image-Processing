@@ -14,9 +14,17 @@ import model.image.operations.ImageOperation;
 import model.pixel.Pixel;
 import model.pixel.SimplePixel;
 
+/**
+ * This class represents an implementation of a model for an image processing application. It
+ * specifically implements the ImageProcessingModel interface. Currently, this model only supports
+ * loading, storing, and saving PPM files.
+ */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
   private Map<String, MyImage> images;
 
+  /**
+   * Creates an empty model with no images.
+   */
   public ImageProcessingModelImpl() {
     this.images = new HashMap<String, MyImage>();
   }
@@ -26,6 +34,14 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     this.images.put(name, this.processImage(fileName));
   }
 
+  /**
+   * Creates a MyImage object representation of the image file with the given file name. Currently,
+   * only able to process PPM files; will throw an exception if the file given isn't a PPM file.
+   *
+   * @param fileName the name of the image file/the path of the image file being processed
+   * @return the image file represented as a MyImage object
+   * @throws IllegalArgumentException if the file isn't a PPM file
+   */
   private MyImage processImage(String fileName) throws IllegalArgumentException {
     if (fileName.endsWith(".ppm")) {
       return this.processPPM(fileName);
@@ -35,6 +51,12 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
   }
 
+  /**
+   *
+   * @param fileName the name of the image file/the path of the image file being processed
+   * @return
+   * @throws IllegalArgumentException
+   */
   private MyImage processPPM(String fileName) throws IllegalArgumentException {
     Scanner scan;
 
@@ -42,7 +64,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       scan = new Scanner(new FileInputStream(fileName));
     }
     catch (FileNotFoundException e) {
-      throw new IllegalArgumentException("File not found.");
+      throw new IllegalArgumentException("Could not find file; invalid file path.");
     }
 
     StringBuilder builder = new StringBuilder();
@@ -50,7 +72,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (scan.hasNextLine()) {
       String s = scan.nextLine();
-      if (s.charAt(0)!='#') {
+      if (s.charAt(0) != '#') {
         builder.append(s + System.lineSeparator());
       }
     }
@@ -60,16 +82,16 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
     token = scan.next();
     if (!token.equals("P3")) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Invalid PPM file; file should begin with \"P3\"");
     }
     int width = scan.nextInt();
     int height = scan.nextInt();
 
     ArrayList<ArrayList<Pixel>> imageList = new ArrayList<ArrayList<Pixel>>();
 
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < height; i = i + 1) {
       ArrayList<Pixel> row = new ArrayList<Pixel>();
-      for (int j = 0; j < width; j++) {
+      for (int j = 0; j < width; j = j + 1) {
 
         int r = scan.nextInt();
         int g = scan.nextInt();

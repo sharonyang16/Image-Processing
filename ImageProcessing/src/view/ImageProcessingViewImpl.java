@@ -10,7 +10,9 @@ public class ImageProcessingViewImpl implements ImageProcessingView {
 
   public ImageProcessingViewImpl(ImageProcessingModel model, Appendable out)
           throws IllegalArgumentException {
-
+    if (model == null || out == null) {
+      throw new IllegalArgumentException("Model and Appendable object cannot be null!");
+    }
     this.model = model;
     this.out = out;
   }

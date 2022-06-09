@@ -1,8 +1,11 @@
 package model.pixel.operations;
 
 import model.pixel.Pixel;
-import model.pixel.operations.PixelOperation;
 
+/**
+ * This class represents an operation that greyscales a pixel with the red component
+ * of the pixel.
+ */
 public class RedGreyscalePixelOperation implements PixelOperation {
   @Override
   public void execute(Pixel pixel) {

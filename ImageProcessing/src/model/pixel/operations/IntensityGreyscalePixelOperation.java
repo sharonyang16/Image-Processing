@@ -2,6 +2,10 @@ package model.pixel.operations;
 
 import model.pixel.Pixel;
 
+/**
+ * This class represents an operation that greyscales a pixel with the intensity, the average of the
+ * RGB components, of the pixel; the average is rounded down.
+ */
 public class IntensityGreyscalePixelOperation implements PixelOperation {
   @Override
   public void execute(Pixel pixel) {
