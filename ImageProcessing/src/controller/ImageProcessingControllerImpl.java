@@ -132,6 +132,12 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
         c = cmd.apply(input);
         try {
           c.execute(model);
+          try {
+            this.view.renderMessage("Command successful!");
+          }
+          catch (IOException e) {
+            throw new IllegalStateException("Failed to transmit message");
+          }
         }
         catch (IllegalArgumentException e) {
           try {
@@ -140,13 +146,6 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
           catch (IOException ex) {
             throw new IllegalStateException("Failed to transmit message");
           }
-        }
-
-        try {
-          this.view.renderMessage("Command successful!");
-        }
-        catch (IOException e) {
-          throw new IllegalStateException("Failed to transmit message");
         }
 
       }

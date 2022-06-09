@@ -1,1 +1,1 @@
-# ImageProcessingProject
+# ImageProcessing

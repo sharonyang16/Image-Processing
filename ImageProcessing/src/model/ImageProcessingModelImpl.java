@@ -89,6 +89,8 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     int width = scan.nextInt();
     int height = scan.nextInt();
 
+    int maxValue = scan.nextInt();
+
     ArrayList<ArrayList<Pixel>> imageList = new ArrayList<ArrayList<Pixel>>();
 
     for (int i = 0; i < height; i = i + 1) {
@@ -168,6 +170,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     writer.println("P3");
     writer.println("# Created 2022");
     writer.println(image.getWidth() + " " + image.getHeight());
+    writer.println("255");
 
     for (int i = 0; i < image.getHeight(); i++) {
       for (int j = 0; j < image.getWidth(); j++) {
