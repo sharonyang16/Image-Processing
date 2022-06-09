@@ -181,4 +181,16 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
     writer.close();
   }
+
+  @Override
+  public MyImage getImageNamed(String name) throws IllegalArgumentException {
+    MyImage image = this.images.getOrDefault(name, null);
+
+    if (image == null) {
+      throw new IllegalArgumentException("This image does not exist!");
+    }
+    else {
+      return image;
+    }
+  }
 }

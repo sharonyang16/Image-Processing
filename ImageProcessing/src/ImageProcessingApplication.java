@@ -5,7 +5,7 @@ import controller.ImageProcessingControllerImpl;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import view.ImageProcessingView;
-import view.ImageProcessingViewImpl;
+import view.ImageProcessingTextView;
 
 /**
  * This class represents an image processing application. Users are able to interact with this
@@ -22,7 +22,7 @@ public class ImageProcessingApplication {
    */
   public static void main(String[] args) {
     ImageProcessingModel model =  new ImageProcessingModelImpl();
-    ImageProcessingView view = new ImageProcessingViewImpl(model, System.out);
+    ImageProcessingView view = new ImageProcessingTextView(System.out);
     ImageProcessingController controller = new ImageProcessingControllerImpl(model, view,
             new InputStreamReader(System.in));
 

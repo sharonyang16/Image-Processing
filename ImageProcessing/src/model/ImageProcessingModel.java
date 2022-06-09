@@ -1,5 +1,6 @@
 package model;
 
+import model.image.MyImage;
 import model.image.operations.ImageOperation;
 
 /**
@@ -39,5 +40,14 @@ public interface ImageProcessingModel {
    *                                  or the file is unable to be written
    */
   void saveAs(String fileName, String name) throws IllegalArgumentException;
+
+  /**
+   * Returns the image that's stored under the given name in this model.
+   *
+   * @param name the name of the image in this model
+   * @return the image under the given name
+   * @throws IllegalArgumentException if the image doesn't exist in this model
+   */
+  MyImage getImageNamed(String name) throws IllegalArgumentException;
 }
 
