@@ -1,6 +1,6 @@
 # ImageProcesing
 
-Design Decisions:
+## Design Decisions:
 
 An image, represented by the MyImage interface, in this program is represented by a collection of pixels, represented by the Pixel
 interface. A Pixel object is able to accept an operation that is performed on this pixel, represented by the PixelOperation interface;
@@ -54,12 +54,12 @@ onto the model.The ImageCommand class implements represents any command that edi
 modify one of the images that it stores with a provided ImageOperation. The Load and Save commands use the methods in the model to load and save 
 images to the model.
 
-How to run this program:
+## How to run this program:
 
 To run the program, no command line arguments are required.
 When the program runs, first load an image into the program by entering this command into the console:
 
-load <file-path> <image-name>
+load *file-path* *image-name*
 
 where file-path is the path of the image on your system and image-name is the name you want to refer to it as within the program.
 For example, if you wanted to load the Landscape.ppm image provided in the res/ folder and call it "landscape", you would enter:
@@ -71,25 +71,25 @@ this program by loading an image using a different file path and the same image 
 
 To run operations on the images loaded into the program, you are able to choose from these commands:
 
-red-greyscale <image-name> <new-image-name>
+red-greyscale *image-name* *new-image-name*
 
-green-greyscale <image-name> <new-image-name>
+green-greyscale *image-name* *new-image-name*
 
-blue-greyscale <image-name> <new-image-name>
+blue-greyscale *image-name* *new-image-name*
 
-value-greyscale <image-name> <new-image-name>
+value-greyscale *image-name* *new-image-name*
 
-intensity-greyscale <image-name> <new-image-name>
+intensity-greyscale *image-name* *new-image-name*
 
-luma-greyscale <image-name> <new-image-name>
+luma-greyscale *image-name* *new-image-name*
 
-flip-horizontally <image-name> <new-image-name>
+flip-horizontally *image-name* *new-image-name*
 
-flip-vertically <image-name> <new-image-name>
+flip-vertically *image-name* *new-image-name*
 
-brighten <image-name> <new-image-name> <value>
+brighten *image-name* *new-image-name* *value*
 
-darken <image-name> <new-image-name> <value>
+darken *image-name* *new-image-name* *value*
 
 where image-name refers to the name of an image already loaded into this program, new-image-name is the name the changed image will
 be stored under in this program, and value (only applicable for brighten and darken right now) is the amount this operation should
@@ -102,7 +102,7 @@ flip-vertically landscape-bright landscape-bright-then-flip
 
 The original image doesn't change when you perform operations on it. To save an image onto your system, enter this command:
 
-save <file-path> <image-name>
+save *file-path* *image-name*
 
 where file-path is where the image should be saved on your machine and image-name is the name of an image stored in this program.
 For example, if you wanted to save the image we just performed some operations on to res/Landscape-bright-then-flip.ppm, you would
@@ -112,7 +112,7 @@ save res/Landscape-bright-then-flip.ppm landscape-bright-then-flip
 
 To quit this program, enter 'q' or "quit" into the console.
 
-Image citation:
+## Image citation:
 
 Landscape.ppm, included within the res/ folder, is photographed and owned by one of the contributors on this project (Sharon Yang,
 yang.shar@northeastern.edu) and is authorized to be used in this project.
