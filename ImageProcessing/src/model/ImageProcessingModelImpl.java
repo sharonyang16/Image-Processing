@@ -74,9 +74,15 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     // deletes comment lines
     while (scan.hasNextLine()) {
       String s = scan.nextLine();
-      if (s.charAt(0) != '#') {
-        builder.append(s + System.lineSeparator());
+      try {
+        if (s.charAt(0) != '#') {
+          builder.append(s + System.lineSeparator());
+        }
       }
+      catch (StringIndexOutOfBoundsException e) {
+        throw new IllegalArgumentException("File is empty or cannot cannot be read.");
+      }
+
     }
     scan = new Scanner(builder.toString());
 
