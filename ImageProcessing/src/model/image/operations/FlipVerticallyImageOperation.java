@@ -5,7 +5,7 @@ import model.image.MyImage;
 /**
  * This class represents an operation that flips an image vertically.
  */
-public class FlipVerticallyImageOperation implements ImageOperation {
+public final class FlipVerticallyImageOperation implements ImageOperation {
   @Override
   public void execute(MyImage image) {
     image.flipVertically();

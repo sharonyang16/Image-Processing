@@ -56,6 +56,7 @@ public class SimpleImage implements MyImage {
   public void flipHorizontally() {
     for (int i = 0; i < this.getHeight(); i = i + 1) {
       for (int j = 0; j < this.getWidth() / 2; j = j + 1) {
+        // swaps the pixels from the left and right
         Pixel front = this.getPixelAt(i, j);
         Pixel back = this.getPixelAt(i, this.getWidth() - 1 - j);
         this.image.get(i).set(j, back);
@@ -68,6 +69,7 @@ public class SimpleImage implements MyImage {
   public void flipVertically() {
     for (int i = 0; i < this.getHeight() / 2; i = i + 1) {
       for (int j = 0; j < this.getWidth(); j = j + 1) {
+        // swaps the pixels fom the bottom and top
         Pixel front = this.getPixelAt(i, j);
         Pixel back = this.getPixelAt(this.getHeight() - 1 - i, j);
         this.image.get(i).set(j, back);
@@ -79,6 +81,7 @@ public class SimpleImage implements MyImage {
   @Override
   public MyImage getCopy() {
     ArrayList<ArrayList<Pixel>> copied = new ArrayList<ArrayList<Pixel>>();
+    // creates a 2D array of a copied version of each pixel in this image
     for (int i = 0; i < this.getHeight(); i++) {
       ArrayList<Pixel> row = new ArrayList<Pixel>();
       for (int j = 0; j < this.getWidth(); j = j + 1) {

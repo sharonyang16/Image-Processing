@@ -5,7 +5,7 @@ import model.pixel.Pixel;
 /**
  * This class represents an operation that brightens a pixel by a value.
  */
-public class BrightenPixelOperation implements PixelOperation {
+public final class BrightenPixelOperation implements PixelOperation {
   private final int value;
 
   /**

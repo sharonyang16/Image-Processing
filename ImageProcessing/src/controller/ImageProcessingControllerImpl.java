@@ -40,9 +40,9 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
    * Creates a controller with the given model, view and scanner with the given Readable object.
    * Additionally, a container of known commands is initialized.
    *
-   * @param model
-   * @param view
-   * @param in
+   * @param model the model being used
+   * @param view the view being used
+   * @param in the Readable object being used
    * @throws IllegalArgumentException if any of the parameters are null
    */
   public ImageProcessingControllerImpl(

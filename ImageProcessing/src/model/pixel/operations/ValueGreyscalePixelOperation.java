@@ -6,7 +6,7 @@ import model.pixel.Pixel;
  * This class represents an operation that greyscales a pixel with the maximum
  * value of the RGB components.
  */
-public class ValueGreyscalePixelOperation implements PixelOperation {
+public final class ValueGreyscalePixelOperation implements PixelOperation {
 
   @Override
   public void execute(Pixel pixel) {

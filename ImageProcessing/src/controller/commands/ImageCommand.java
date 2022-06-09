@@ -4,13 +4,13 @@ import model.ImageProcessingModel;
 import model.image.operations.ImageOperation;
 
 /**
- * This class represents a command that modifies an image in someway and saves it as a
- * new image.
+ * This class represents a command that modifies an image within an image processing application in
+ * and saves it within the application as a new image.
  */
-public class ImageCommand implements ImageProcessingCommand {
-  private String originalName;
-  private String newName;
-  private ImageOperation op;
+public final class ImageCommand implements ImageProcessingCommand {
+  private final String originalName;
+  private final String newName;
+  private final ImageOperation op;
 
   /**
    * Creates an image modifying command that contains the name of the original image, the name
@@ -30,6 +30,4 @@ public class ImageCommand implements ImageProcessingCommand {
   public void execute(ImageProcessingModel model) throws IllegalArgumentException {
     model.performAndSaveAs(originalName, newName, op);
   }
-
-
 }

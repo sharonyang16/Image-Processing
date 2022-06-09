@@ -52,16 +52,17 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   /**
+   * Processes the given PPM file as a SimpleImage created of SimplePixel objects and returns it.
    *
-   * @param fileName the name of the image file/the path of the image file being processed
-   * @return
-   * @throws IllegalArgumentException
+   * @param filePath the name of the image file/the path of the image file being processed
+   * @return the SimpleImage created representing the image from the given file path
+   * @throws IllegalArgumentException if the file cannot be found or is written wrong
    */
-  private MyImage processPPM(String fileName) throws IllegalArgumentException {
+  private MyImage processPPM(String filePath) throws IllegalArgumentException {
     Scanner scan;
 
     try {
-      scan = new Scanner(new FileInputStream(fileName));
+      scan = new Scanner(new FileInputStream(filePath));
     }
     catch (FileNotFoundException e) {
       throw new IllegalArgumentException("Could not find file; invalid file path.");
@@ -69,7 +70,8 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
     StringBuilder builder = new StringBuilder();
 
-    //read the file line by line, and populate a string. This will throw away any comment lines
+    // reads the file line by line, and creates a string
+    // deletes comment lines
     while (scan.hasNextLine()) {
       String s = scan.nextLine();
       if (s.charAt(0) != '#') {
@@ -78,12 +80,12 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
     scan = new Scanner(builder.toString());
 
-    String token;
-
-    token = scan.next();
+    // the first string in the file
+    String token = scan.next();
     if (!token.equals("P3")) {
       throw new IllegalArgumentException("Invalid PPM file; file should begin with \"P3\"");
     }
+
     int width = scan.nextInt();
     int height = scan.nextInt();
 
@@ -92,12 +94,10 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     for (int i = 0; i < height; i = i + 1) {
       ArrayList<Pixel> row = new ArrayList<Pixel>();
       for (int j = 0; j < width; j = j + 1) {
-
         int r = scan.nextInt();
         int g = scan.nextInt();
         int b = scan.nextInt();
         Pixel pixel = new SimplePixel(r, g, b);
-
         row.add(pixel);
       }
       imageList.add(row);
@@ -113,7 +113,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     MyImage image = this.images.getOrDefault(originalName, null);
 
     if (image == null) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Image not found.");
     }
     else {
       MyImage newImage = image.getCopy();
@@ -123,6 +123,15 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
   }
 
+  /**
+   * Writes an image file of the given file name with the image saved in this model of the given
+   * name. Currently is only able save images as a PPM file; will throw an exception of the file
+   * name does not match that of a PPM file.
+   *
+   * @param fileName the name of the file being saved
+   * @param name the image in this model that's being saved as a file
+   * @throws IllegalArgumentException if the file being written isn't a PPM file
+   */
   @Override
   public void saveAs(String fileName, String name) throws IllegalArgumentException {
     if (fileName.endsWith(".ppm")) {
@@ -134,6 +143,14 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   }
 
+  /**
+   * Saves the image under the given name in this model in a PPM file under the given file name.
+   *
+   * @param fileName the name of the file being written
+   * @param name the name of the image in this model
+   * @throws IllegalArgumentException if the given image name doesn't exist in this model or the
+   *                                  file is unable to be written.
+   */
   private void saveAsPPM(String fileName, String name) throws IllegalArgumentException {
     PrintWriter writer;
     try {
@@ -149,7 +166,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       throw new IllegalArgumentException("Image not found.");
     }
     writer.println("P3");
-    writer.println("# ");
+    writer.println("# Created 2022");
     writer.println(image.getWidth() + " " + image.getHeight());
 
     for (int i = 0; i < image.getHeight(); i++) {

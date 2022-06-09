@@ -7,7 +7,7 @@ import model.pixel.operations.BlueGreyscalePixelOperation;
  * This class represents an operation that greyscales an image based on the blue component of each
  * pixel of the image.
  */
-public class BlueGreyscaleImageOperation extends AbstractImageOperation {
+public final class BlueGreyscaleImageOperation extends AbstractImageOperation {
   @Override
   public void execute(MyImage image) {
     helpExecute(image, new BlueGreyscalePixelOperation());

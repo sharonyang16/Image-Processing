@@ -8,7 +8,7 @@ import model.pixel.operations.BrightenPixelOperation;
  * This class represents an operation that brightens an image by brightening each pixel of the image
  * by a value.
  */
-public class BrightenImageOperation extends AbstractImageOperation{
+public final class BrightenImageOperation extends AbstractImageOperation{
   private final int value;
 
   /**

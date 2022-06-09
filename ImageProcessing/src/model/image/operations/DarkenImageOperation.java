@@ -7,7 +7,7 @@ import model.pixel.operations.DarkenPixelOperation;
  * This class represents an operation that darkens an image by darkening each pixel of the image
  * by a value.
  */
-public class DarkenImageOperation extends AbstractImageOperation {
+public final class DarkenImageOperation extends AbstractImageOperation {
   private final int value;
 
   /**
