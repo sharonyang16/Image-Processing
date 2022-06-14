@@ -1,18 +1,25 @@
 package model;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
+
 import model.image.MyImage;
 import model.image.SimpleImage;
 import model.image.operations.ImageOperation;
 import model.pixel.Pixel;
 import model.pixel.SimplePixel;
+import model.pixel.TransparentPixel;
 
 /**
  * This class represents an implementation of a model for an image processing application. It
@@ -46,9 +53,41 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (fileName.endsWith(".ppm")) {
       return this.processPPM(fileName);
     }
+    else if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".bmp")) {
+      try {
+        BufferedImage image = ImageIO.read(new File(fileName));
+        return this.processImageWithBufferedImage(image);
+      }
+      catch (IOException e) {
+        throw new IllegalArgumentException("Error reading file");
+      }
+
+    }
     else {
       throw new IllegalArgumentException("Unsupported file type!");
     }
+  }
+
+  private MyImage processImageWithBufferedImage(BufferedImage image) {
+    ArrayList<ArrayList<Pixel>> imageArray = new ArrayList<ArrayList<Pixel>>();
+    for (int i = 0; i < image.getHeight(); i = i + 1) {
+      ArrayList<Pixel> row = new ArrayList<Pixel>();
+      for (int j = 0; j < image.getHeight(); j = j + 1 ) {
+        Pixel pixel;
+        if (image.getColorModel().hasAlpha()) {
+          Color color = new Color(image.getRGB(i, j), true);
+          pixel = new TransparentPixel(color.getRed(), color.getGreen(),
+                  color.getBlue(), color.getAlpha());
+        }
+        else {
+          Color color = new Color(image.getRGB(i, j));
+          pixel = new SimplePixel(color.getRed(), color.getGreen(), color.getBlue());
+        }
+        row.add(pixel);
+      }
+      imageArray.add(row);
+    }
+    return new SimpleImage(imageArray);
   }
 
   /**
@@ -145,8 +184,58 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (fileName.endsWith(".ppm")) {
       this.saveAsPPM(fileName, name);
     }
+    else if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".bmp")) {
+      this.saveAsWithBufferedImage(fileName, name);
+    }
     else {
       throw new IllegalArgumentException("Unsupported file type!");
+    }
+
+  }
+
+  private void saveAsWithBufferedImage(String fileName, String name)
+          throws IllegalArgumentException {
+    MyImage imageAsMyImage = this.images.getOrDefault(name, null);
+
+    if (imageAsMyImage == null) {
+      throw new IllegalArgumentException("Image not found.");
+    }
+
+    int imageType;
+    if (fileName.endsWith("jpg")) {
+      imageType = BufferedImage.TYPE_INT_RGB;
+    }
+    else {
+      imageType = BufferedImage.TYPE_INT_ARGB;
+    }
+
+    BufferedImage image
+            = new BufferedImage(imageAsMyImage.getWidth(), imageAsMyImage.getHeight(), imageType);
+
+    for (int i = 0; i < imageAsMyImage.getHeight(); i = i + 1) {
+      for (int j = 0; j < imageAsMyImage.getWidth(); j = j + 1) {
+        Pixel curPixel = imageAsMyImage.getPixelAt(i, j);
+        Color pixelColor;
+        if (image.getColorModel().hasAlpha()) {
+          pixelColor = new Color(curPixel.getRed(), curPixel.getGreen(),
+                  curPixel.getBlue(), curPixel.getAlpha());
+        }
+        else {
+          pixelColor = new Color(curPixel.getRed(), curPixel.getGreen(), curPixel.getBlue());
+        }
+        image.setRGB(j, i, pixelColor.getRGB());
+
+      }
+    }
+
+    String fileType = fileName.substring(fileName.length() - 3);
+
+    try {
+      File file = new File(fileName);
+      ImageIO.write(image, fileType, file);
+    }
+    catch (IOException e) {
+      throw new IllegalArgumentException();
     }
 
   }

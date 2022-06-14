@@ -20,7 +20,7 @@ public class SimplePixel implements Pixel {
    */
   public SimplePixel(int red, int green, int blue) throws IllegalArgumentException {
     if (red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255) {
-      throw new IllegalArgumentException("Invalid component value.");
+      throw new IllegalArgumentException("Invalid RGB component value.");
     }
     this.components[0] = red;
     this.components[1] = green;
@@ -45,6 +45,11 @@ public class SimplePixel implements Pixel {
   @Override
   public int getBlue() {
     return components[2];
+  }
+
+  @Override
+  public int getAlpha() {
+    return 255;
   }
 
   @Override

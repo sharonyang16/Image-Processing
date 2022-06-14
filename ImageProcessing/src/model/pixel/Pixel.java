@@ -34,6 +34,8 @@ public interface Pixel {
    */
   int getBlue();
 
+  int getAlpha();
+
   void setRed(int red);
 
   void setGreen(int green);
