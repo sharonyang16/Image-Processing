@@ -11,7 +11,7 @@ public final class DarkenImageOperation extends AbstractImageOperation {
   private final int value;
 
   /**
-   * Creates a image darkening operation that darkens the image by the given value
+   * Creates a image darkening operation that darkens the image by the given value.
    *
    * @param value the value the image is being darkened by
    */

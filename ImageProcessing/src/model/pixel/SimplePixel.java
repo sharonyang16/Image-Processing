@@ -47,6 +47,21 @@ public class SimplePixel implements Pixel {
     return components[2];
   }
 
+  @Override
+  public void setRed(int red) {
+    this.components[0] = clampHelper(red);
+  }
+
+  @Override
+  public void setGreen(int green) {
+    this.components[1] = clampHelper(green);
+  }
+
+  @Override
+  public void setBlue(int blue) {
+    this.components[2] = clampHelper(blue);
+  }
+
   /**
    * Greyscales this pixel by setting the RGB components all to the same given value if the given
    * value is between 0 and 255 (inclusive). Otherwise, throws an exception.
@@ -74,15 +89,19 @@ public class SimplePixel implements Pixel {
   @Override
   public void adjustBrightness(int value) {
     for (int i = 0; i < this.components.length; i = i + 1) {
-      if (this.components[i] + value < 0) {
-        this.components[i] = 0;
-      }
-      else if (this.components[i] + value > 255) {
-        this.components[i] = 255;
-      }
-      else {
-        this.components[i] += value;
-      }
+      this.components[i] = clampHelper(this.components[i] + value);
+    }
+  }
+
+  private int clampHelper(int value) {
+    if (value < 0) {
+      return 0;
+    }
+    else if (value > 255) {
+      return 255;
+    }
+    else {
+      return value;
     }
   }
 

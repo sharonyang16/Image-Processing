@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 
@@ -12,14 +13,18 @@ import controller.commands.Load;
 import controller.commands.Save;
 import model.ImageProcessingModel;
 import model.image.operations.BlueGreyscaleImageOperation;
+import model.image.operations.BlurImageOperation;
 import model.image.operations.BrightenImageOperation;
 import model.image.operations.DarkenImageOperation;
 import model.image.operations.FlipHorizontallyImageOperation;
 import model.image.operations.FlipVerticallyImageOperation;
 import model.image.operations.GreenGreyscaleImageOperation;
+import model.image.operations.GreyscaleImageOperation;
 import model.image.operations.IntensityGreyscaleImageOperation;
 import model.image.operations.LumaGreyscaleImageOperation;
 import model.image.operations.RedGreyscaleImageOperation;
+import model.image.operations.SepiaImageOperation;
+import model.image.operations.SharpenImageOperation;
 import model.image.operations.ValueGreyscaleImageOperation;
 import view.ImageProcessingView;
 
@@ -55,39 +60,67 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
     this.view = view;
     this.input = new Scanner(in);
     this.knownCommands = new HashMap<String, Function<Scanner, ImageProcessingCommand>>();
-    this.knownCommands.put("load", (Scanner s) -> {return new Load(s.next(), s.next()); });
+    this.knownCommands.put("load", (Scanner s) -> {
+      return new Load(s.next(), s.next()); });
     this.knownCommands.put("red-greyscale",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new RedGreyscaleImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new RedGreyscaleImageOperation()); });
     this.knownCommands.put("green-greyscale",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new GreenGreyscaleImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new GreenGreyscaleImageOperation()); });
     this.knownCommands.put("blue-greyscale",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new BlueGreyscaleImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new BlueGreyscaleImageOperation()); });
     this.knownCommands.put("value-greyscale",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new ValueGreyscaleImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new ValueGreyscaleImageOperation()); });
     this.knownCommands.put("intensity-greyscale",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new IntensityGreyscaleImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new IntensityGreyscaleImageOperation()); });
     this.knownCommands.put("luma-greyscale",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new LumaGreyscaleImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new LumaGreyscaleImageOperation()); });
     this.knownCommands.put("flip-horizontally",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new FlipHorizontallyImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new FlipHorizontallyImageOperation()); });
     this.knownCommands.put("flip-vertically",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new FlipVerticallyImageOperation());});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new FlipVerticallyImageOperation()); });
     this.knownCommands.put("brighten",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new BrightenImageOperation(s.nextInt()));});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new BrightenImageOperation(Integer.parseInt(s.next()))); });
     this.knownCommands.put("darken",
-            (Scanner s) -> {return new ImageCommand(
-                    s.next(), s.next(), new DarkenImageOperation(s.nextInt()));});
+        (Scanner s) -> {
+          return new ImageCommand(
+                    s.next(), s.next(), new DarkenImageOperation(Integer.parseInt(s.next()))); });
+    this.knownCommands.put("blur",
+            (Scanner s) -> {
+              return new ImageCommand(
+                      s.next(), s.next(), new BlurImageOperation()); });
+    this.knownCommands.put("sharpen",
+            (Scanner s) -> {
+              return new ImageCommand(
+                      s.next(), s.next(), new SharpenImageOperation()); });
+    this.knownCommands.put("greyscale",
+            (Scanner s) -> {
+              return new ImageCommand(
+                      s.next(), s.next(), new GreyscaleImageOperation()); });
+    this.knownCommands.put("sepia",
+            (Scanner s) -> {
+              return new ImageCommand(
+                      s.next(), s.next(), new SepiaImageOperation()); });
     this.knownCommands.put("save",
-            (Scanner s) -> {return new Save(s.next(), s.next());});
+        (Scanner s) -> {
+          return new Save(s.next(), s.next()); });
   }
 
   /**
@@ -95,14 +128,17 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
    * commands and is also able to quit the application by entering 'q' or "quit". A menu containing
    * how to enter these commands is displayed at the start of this method. This method continues to
    * run until it runs out of inputs, the user decides to quit, or an exception is thrown due to the
-   * program being unable to transmit a message.
+   * program being unable to transmit a message. Once the user begins a valid command, they are
+   * unable to quit until the command is fully completed; for example, if the user begins the
+   * blue-greyscale command, they must provide two more inputs (they can be valid or invalid)
+   * before they are able to quit through entering "q" or "quit".
    *
    * @throws IllegalStateException if transmission fails
    */
   @Override
   public void execute() throws IllegalStateException {
     this.printMenu();
-    while(input.hasNext()) {
+    while (input.hasNext()) {
       ImageProcessingCommand c;
       String in = input.next();
 
@@ -111,7 +147,7 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
         try {
           this.view.renderMessage("Thanks for using this program! Goodbye!");
         }
-        catch(IOException e) {
+        catch (IOException e) {
           throw new IllegalStateException("Failed to transmit message");
         }
         return;
@@ -123,13 +159,35 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
         try {
           this.view.renderMessage("Invalid command; try again.");
         }
-        catch(IOException e) {
+        catch (IOException e) {
           throw new IllegalStateException("Failed to transmit message");
         }
 
       }
       else {
-        c = cmd.apply(input);
+        // done so compiler doesn't complain
+        c = new Save("", "");
+
+        try {
+          c = cmd.apply(input);
+        }
+        catch (NumberFormatException e) {
+          try {
+            this.view.renderMessage("Command unsuccessful! Invalid number.");
+          }
+          catch (IOException ex) {
+            throw new IllegalStateException("Failed to transmit message");
+          }
+        }
+        catch (NoSuchElementException e) {
+          try {
+            this.view.renderMessage("Command unsuccessful! Not enough inputs.");
+          }
+          catch (IOException ex) {
+            throw new IllegalStateException("Failed to transmit message");
+          }
+        }
+
         try {
           c.execute(model);
           try {
@@ -182,17 +240,27 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
               "luma-greyscale image-name new-name (greyscales the image using "
                       + "the luma component and calls it by the new name)");
       this.view.renderMessage(
-              "flip-horizontally image-name new-name " +
-                      "(flips the image horizontally and calls it by the new name)");
+              "flip-horizontally image-name new-name "
+                      + "(flips the image horizontally and calls it by the new name)");
       this.view.renderMessage(
-              "flip-vertically image-name new-name " +
-                      "(flips the image vertically and calls it by the new name)");
+              "flip-vertically image-name new-name "
+                      + "(flips the image vertically and calls it by the new name)");
       this.view.renderMessage(
-              "brighten image-name new-name value" +
-                      "(brightens the image by the given value and calls it by the new name)");
+              "brighten image-name new-name value "
+                      + "(brightens the image by the given value and calls it by the new name)");
       this.view.renderMessage(
-              "darken image-name new-name value" +
-                      "(darkens the image by the given value and calls it by the new name)");
+              "darken image-name new-name value "
+                      + "(darkens the image by the given value and calls it by the new name)");
+      this.view.renderMessage(
+              "blur image-name new-name (blurs the image and calls it by the new name)");
+      this.view.renderMessage(
+              "sharpen image-name new-name (sharpens the image and calls it by the new name)");
+      this.view.renderMessage(
+              "greyscale image-name new-name (greyscales the image (using the luma of each pixel) "
+                      + "and calls it by the new name)");
+      this.view.renderMessage(
+              "sepia image-name new-name (puts the image in sepia tone "
+                      + "and calls it by the new name)");
       this.view.renderMessage(
               "save file-path image-name (saves the image into the file path)");
       this.view.renderMessage(

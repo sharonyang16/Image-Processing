@@ -164,7 +164,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     try {
       writer = new PrintWriter(fileName);
     }
-    catch(FileNotFoundException e) {
+    catch (FileNotFoundException e) {
       throw new IllegalArgumentException("Error creating file named " + fileName);
     }
 

@@ -2,8 +2,6 @@ package view;
 
 import java.io.IOException;
 
-import model.ImageProcessingModel;
-
 /**
  * This class represents a text based view for a image processing application.
  */

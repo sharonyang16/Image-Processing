@@ -8,8 +8,8 @@ import model.ImageProcessingModel;
  * on.
  */
 public final class Save implements ImageProcessingCommand {
-	private final String filePath;
-	private final String name;
+  private final String filePath;
+  private final String name;
 
   /**
    * Creates a saving command with the given file path and name.

@@ -34,6 +34,12 @@ public interface Pixel {
    */
   int getBlue();
 
+  void setRed(int red);
+
+  void setGreen(int green);
+
+  void setBlue(int blue);
+
   /**
    * Greyscales this pixel by setting the RGB components all to the same given value.
    *
