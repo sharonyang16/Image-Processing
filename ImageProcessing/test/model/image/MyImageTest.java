@@ -15,8 +15,8 @@ import model.image.operations.IntensityGreyscaleImageOperation;
 import model.image.operations.LumaGreyscaleImageOperation;
 import model.image.operations.RedGreyscaleImageOperation;
 import model.image.operations.ValueGreyscaleImageOperation;
-import model.pixel.Pixel;
-import model.pixel.SimplePixel;
+import model.pixel.TransparentPixel;
+import model.pixel.RGBAPixel;
 
 
 import static org.junit.Assert.assertEquals;
@@ -29,23 +29,23 @@ public class MyImageTest {
   private int[] components6;
   private int[] components7;
   private int[] components8;
-  private Pixel simplePixel1;
-  private Pixel simplePixel2;
-  private Pixel simplePixel3;
-  private Pixel simplePixel4;
+  private TransparentPixel pixel1;
+  private TransparentPixel pixel2;
+  private TransparentPixel pixel3;
+  private TransparentPixel pixel4;
 
-  private Pixel simplePixel5;
-  private Pixel simplePixel6;
-  private Pixel simplePixel7;
-  private Pixel simplePixel8;
+  private TransparentPixel pixel5;
+  private TransparentPixel pixel6;
+  private TransparentPixel pixel7;
+  private TransparentPixel pixel8;
   private MyImage simpleImage1;
-  private ArrayList<Pixel> subImage;
-  private ArrayList<ArrayList<Pixel>> image;
+  private ArrayList<TransparentPixel> subImage;
+  private ArrayList<ArrayList<TransparentPixel>> image;
 
   private MyImage simpleImage2;
-  private ArrayList<Pixel> subImage2;
-  private ArrayList<Pixel> subImage3;
-  private ArrayList<ArrayList<Pixel>> image2;
+  private ArrayList<TransparentPixel> subImage2;
+  private ArrayList<TransparentPixel> subImage3;
+  private ArrayList<ArrayList<TransparentPixel>> image2;
 
   @Before
   public void init() {
@@ -59,38 +59,38 @@ public class MyImageTest {
     components1[1] = 100;
     components1[2] = 40;
 
-    this.simplePixel1 = new SimplePixel(components1[0], components1[1], components1[2]);
+    this.pixel1 = new RGBAPixel(components1[0], components1[1], components1[2]);
 
     components2 = new int[3];
     components2[0] = 100;
     components2[1] = 40;
     components2[2] = 200;
 
-    this.simplePixel2 = new SimplePixel(components2[0], components2[1], components2[2]);
+    this.pixel2 = new RGBAPixel(components2[0], components2[1], components2[2]);
 
     components3 = new int[3];
     components3[0] = 40;
     components3[1] = 200;
     components3[2] = 100;
 
-    this.simplePixel3 = new SimplePixel(components3[0], components3[1], components3[2]);
+    this.pixel3 = new RGBAPixel(components3[0], components3[1], components3[2]);
 
     components4 = new int[3];
     components4[0] = 3;
     components4[1] = 29;
     components4[2] = 44;
 
-    this.simplePixel4 = new SimplePixel(components4[0], components4[1], components4[2]);
+    this.pixel4 = new RGBAPixel(components4[0], components4[1], components4[2]);
 
-    this.subImage = new ArrayList<Pixel>();
+    this.subImage = new ArrayList<TransparentPixel>();
 
-    subImage.add(this.simplePixel1);
-    subImage.add(this.simplePixel2);
-    ArrayList<Pixel> secondRow = new ArrayList<>();
-    secondRow.add(this.simplePixel3);
-    secondRow.add(this.simplePixel4);
+    subImage.add(this.pixel1);
+    subImage.add(this.pixel2);
+    ArrayList<TransparentPixel> secondRow = new ArrayList<>();
+    secondRow.add(this.pixel3);
+    secondRow.add(this.pixel4);
 
-    this.image = new ArrayList<ArrayList<Pixel>>();
+    this.image = new ArrayList<ArrayList<TransparentPixel>>();
 
     image.add(subImage);
     image.add(secondRow);
@@ -102,40 +102,40 @@ public class MyImageTest {
     components5[1] = 2;
     components5[2] = 40;
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[3];
     components6[0] = 90;
     components6[1] = 250;
     components6[2] = 167;
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     this.components7 = new int[3];
     components7[0] = 214;
     components7[1] = 99;
     components7[2] = 86;
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     this.components8 = new int[3];
     components8[0] = 9;
     components8[1] = 54;
     components8[2] = 113;
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -156,7 +156,7 @@ public class MyImageTest {
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidInitializationNoHeight() {
 
-    this.image = new ArrayList<ArrayList<Pixel>>();
+    this.image = new ArrayList<ArrayList<TransparentPixel>>();
 
     this.simpleImage1 = new SimpleImage(image);
 
@@ -165,9 +165,9 @@ public class MyImageTest {
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidInitializationNoWidth() {
 
-    this.subImage = new ArrayList<Pixel>();
+    this.subImage = new ArrayList<TransparentPixel>();
 
-    this.image = new ArrayList<ArrayList<Pixel>>();
+    this.image = new ArrayList<ArrayList<TransparentPixel>>();
 
     image.add(subImage);
 
@@ -194,40 +194,40 @@ public class MyImageTest {
     components5[1] = 40;
     components5[2] = 40;
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[3];
     components6[0] = 200;
     components6[1] = 200;
     components6[2] = 200;
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     this.components7 = new int[3];
     components7[0] = 100;
     components7[1] = 100;
     components7[2] = 100;
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     this.components8 = new int[3];
     components8[0] = 44;
     components8[1] = 44;
     components8[2] = 44;
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -245,31 +245,31 @@ public class MyImageTest {
 
     this.components5 = new int[]{200, 200, 200};
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[]{100, 100, 100};
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     this.components7 = new int[]{40, 40, 40};
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     this.components8 = new int[]{3, 3, 3};
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -287,31 +287,31 @@ public class MyImageTest {
 
     this.components5 = new int[]{100, 100, 100};
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[]{40, 40, 40};
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     this.components7 = new int[]{200, 200, 200};
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     this.components8 = new int[]{29, 29, 29};
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -329,31 +329,31 @@ public class MyImageTest {
 
     this.components5 = new int[]{113, 113, 113};
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[]{113, 113, 113};
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     int[] components7 = new int[]{113, 113, 113};
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     int[] components8 = new int[]{25, 25, 25};
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -371,31 +371,31 @@ public class MyImageTest {
 
     this.components5 = new int[]{116, 116, 116};
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[]{64, 64, 64};
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     this.components7 = new int[]{158, 158, 158};
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     this.components8 = new int[]{24, 24, 24};
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -414,31 +414,31 @@ public class MyImageTest {
 
     this.components5 = new int[]{200, 200, 200};
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[]{200, 200, 200};
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     this.components7 = new int[]{200, 200, 200};
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     this.components8 = new int[]{44, 44, 44};
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -457,31 +457,31 @@ public class MyImageTest {
 
     this.components5 = new int[]{210, 110, 50};
 
-    this.simplePixel5 = new SimplePixel(components5[0], components5[1], components5[2]);
+    this.pixel5 = new RGBAPixel(components5[0], components5[1], components5[2]);
 
     this.components6 = new int[]{110, 50, 210};
 
-    this.simplePixel6 = new SimplePixel(components6[0], components6[1], components6[2]);
+    this.pixel6 = new RGBAPixel(components6[0], components6[1], components6[2]);
 
     this.components7 = new int[]{50, 210, 110};
 
-    this.simplePixel7 = new SimplePixel(components7[0], components7[1], components7[2]);
+    this.pixel7 = new RGBAPixel(components7[0], components7[1], components7[2]);
 
     this.components8 = new int[]{13, 39, 54};
 
-    this.simplePixel8 = new SimplePixel(components8[0], components8[1], components8[2]);
+    this.pixel8 = new RGBAPixel(components8[0], components8[1], components8[2]);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -498,24 +498,24 @@ public class MyImageTest {
   @Test
   public void testAcceptBrightenImageOpClampToMax() {
 
-    this.simplePixel5 = new SimplePixel(255, 255, 255);
+    this.pixel5 = new RGBAPixel(255, 255, 255);
 
-    this.simplePixel6 = new SimplePixel(255, 255, 255);
+    this.pixel6 = new RGBAPixel(255, 255, 255);
 
-    this.simplePixel7 = new SimplePixel(255, 255, 255);
+    this.pixel7 = new RGBAPixel(255, 255, 255);
 
-    this.simplePixel8 = new SimplePixel(255, 255, 255);
-    this.subImage2 = new ArrayList<Pixel>();
+    this.pixel8 = new RGBAPixel(255, 255, 255);
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -532,25 +532,25 @@ public class MyImageTest {
   @Test
   public void testAcceptDarkenImageOp() {
 
-    this.simplePixel5 = new SimplePixel(190, 90, 30);
+    this.pixel5 = new RGBAPixel(190, 90, 30);
 
-    this.simplePixel6 = new SimplePixel(90, 30, 190);
+    this.pixel6 = new RGBAPixel(90, 30, 190);
 
-    this.simplePixel7 = new SimplePixel(30, 190, 90);
+    this.pixel7 = new RGBAPixel(30, 190, 90);
 
-    this.simplePixel8 = new SimplePixel(0, 19, 34);
+    this.pixel8 = new RGBAPixel(0, 19, 34);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -567,25 +567,25 @@ public class MyImageTest {
   @Test
   public void testAcceptDarkenImageClampToMin() {
 
-    this.simplePixel5 = new SimplePixel(0, 0, 0);
+    this.pixel5 = new RGBAPixel(0, 0, 0);
 
-    this.simplePixel6 = new SimplePixel(0, 0, 0);
+    this.pixel6 = new RGBAPixel(0, 0, 0);
 
-    this.simplePixel7 = new SimplePixel(0, 0, 0);
+    this.pixel7 = new RGBAPixel(0, 0, 0);
 
-    this.simplePixel8 = new SimplePixel(0, 0, 0);
+    this.pixel8 = new RGBAPixel(0, 0, 0);
 
-    this.subImage2 = new ArrayList<Pixel>();
+    this.subImage2 = new ArrayList<TransparentPixel>();
 
-    subImage2.add(this.simplePixel5);
-    subImage2.add(this.simplePixel6);
+    subImage2.add(this.pixel5);
+    subImage2.add(this.pixel6);
 
-    this.subImage3 = new ArrayList<Pixel>();
+    this.subImage3 = new ArrayList<TransparentPixel>();
 
-    subImage3.add(this.simplePixel7);
-    subImage3.add(this.simplePixel8);
+    subImage3.add(this.pixel7);
+    subImage3.add(this.pixel8);
 
-    this.image2 = new ArrayList<ArrayList<Pixel>>();
+    this.image2 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image2.add(subImage2);
     image2.add(subImage3);
@@ -602,17 +602,17 @@ public class MyImageTest {
   @Test
   public void testAcceptFlipHorizontallySquare() {
 
-    ArrayList<Pixel> subImage4 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage4 = new ArrayList<TransparentPixel>();
 
-    subImage4.add(this.simplePixel2);
-    subImage4.add(this.simplePixel1);
+    subImage4.add(this.pixel2);
+    subImage4.add(this.pixel1);
 
-    ArrayList<Pixel> subImage5 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage5 = new ArrayList<TransparentPixel>();
 
-    subImage5.add(this.simplePixel4);
-    subImage5.add(this.simplePixel3);
+    subImage5.add(this.pixel4);
+    subImage5.add(this.pixel3);
 
-    ArrayList<ArrayList<Pixel>> image3 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image3 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image3.add(subImage4);
     image3.add(subImage5);
@@ -630,21 +630,21 @@ public class MyImageTest {
 
     //---------Below is the original image
 
-    ArrayList<Pixel> subImage4 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage4 = new ArrayList<TransparentPixel>();
 
-    subImage4.add(this.simplePixel1);
-    subImage4.add(this.simplePixel2);
-    subImage4.add(this.simplePixel3);
-    subImage4.add(this.simplePixel4);
+    subImage4.add(this.pixel1);
+    subImage4.add(this.pixel2);
+    subImage4.add(this.pixel3);
+    subImage4.add(this.pixel4);
 
-    ArrayList<Pixel> subImage5 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage5 = new ArrayList<TransparentPixel>();
 
-    subImage5.add(this.simplePixel5);
-    subImage5.add(this.simplePixel6);
-    subImage5.add(this.simplePixel7);
-    subImage5.add(this.simplePixel8);
+    subImage5.add(this.pixel5);
+    subImage5.add(this.pixel6);
+    subImage5.add(this.pixel7);
+    subImage5.add(this.pixel8);
 
-    ArrayList<ArrayList<Pixel>> image3 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image3 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image3.add(subImage4);
     image3.add(subImage5);
@@ -653,21 +653,21 @@ public class MyImageTest {
 
     //---------Below is the flipped image
 
-    ArrayList<Pixel> subImage6 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage6 = new ArrayList<TransparentPixel>();
 
-    subImage6.add(this.simplePixel5);
-    subImage6.add(this.simplePixel6);
-    subImage6.add(this.simplePixel7);
-    subImage6.add(this.simplePixel8);
+    subImage6.add(this.pixel5);
+    subImage6.add(this.pixel6);
+    subImage6.add(this.pixel7);
+    subImage6.add(this.pixel8);
 
-    ArrayList<Pixel> subImage7 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage7 = new ArrayList<TransparentPixel>();
 
-    subImage7.add(this.simplePixel1);
-    subImage7.add(this.simplePixel2);
-    subImage7.add(this.simplePixel3);
-    subImage7.add(this.simplePixel4);
+    subImage7.add(this.pixel1);
+    subImage7.add(this.pixel2);
+    subImage7.add(this.pixel3);
+    subImage7.add(this.pixel4);
 
-    ArrayList<ArrayList<Pixel>> image4 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image4 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image4.add(subImage4);
     image4.add(subImage5);
@@ -684,17 +684,17 @@ public class MyImageTest {
   @Test
   public void testAcceptFlipVerticallySquare() {
 
-    ArrayList<Pixel> subImage4 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage4 = new ArrayList<TransparentPixel>();
 
-    subImage4.add(this.simplePixel3);
-    subImage4.add(this.simplePixel4);
+    subImage4.add(this.pixel3);
+    subImage4.add(this.pixel4);
 
-    ArrayList<Pixel> subImage5 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage5 = new ArrayList<TransparentPixel>();
 
-    subImage5.add(this.simplePixel1);
-    subImage5.add(this.simplePixel2);
+    subImage5.add(this.pixel1);
+    subImage5.add(this.pixel2);
 
-    ArrayList<ArrayList<Pixel>> image3 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image3 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image3.add(subImage4);
     image3.add(subImage5);
@@ -713,21 +713,21 @@ public class MyImageTest {
 
     //---------Below is the original image
 
-    ArrayList<Pixel> subImage4 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage4 = new ArrayList<TransparentPixel>();
 
-    subImage4.add(this.simplePixel1);
-    subImage4.add(this.simplePixel2);
-    subImage4.add(this.simplePixel3);
-    subImage4.add(this.simplePixel4);
+    subImage4.add(this.pixel1);
+    subImage4.add(this.pixel2);
+    subImage4.add(this.pixel3);
+    subImage4.add(this.pixel4);
 
-    ArrayList<Pixel> subImage5 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage5 = new ArrayList<TransparentPixel>();
 
-    subImage5.add(this.simplePixel5);
-    subImage5.add(this.simplePixel6);
-    subImage5.add(this.simplePixel7);
-    subImage5.add(this.simplePixel8);
+    subImage5.add(this.pixel5);
+    subImage5.add(this.pixel6);
+    subImage5.add(this.pixel7);
+    subImage5.add(this.pixel8);
 
-    ArrayList<ArrayList<Pixel>> image3 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image3 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image3.add(subImage4);
     image3.add(subImage5);
@@ -736,21 +736,21 @@ public class MyImageTest {
 
     //---------Below is the flipped image
 
-    ArrayList<Pixel> subImage6 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage6 = new ArrayList<TransparentPixel>();
 
-    subImage6.add(this.simplePixel4);
-    subImage6.add(this.simplePixel3);
-    subImage6.add(this.simplePixel2);
-    subImage6.add(this.simplePixel1);
+    subImage6.add(this.pixel4);
+    subImage6.add(this.pixel3);
+    subImage6.add(this.pixel2);
+    subImage6.add(this.pixel1);
 
-    ArrayList<Pixel> subImage7 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage7 = new ArrayList<TransparentPixel>();
 
-    subImage7.add(this.simplePixel8);
-    subImage7.add(this.simplePixel7);
-    subImage7.add(this.simplePixel6);
-    subImage7.add(this.simplePixel5);
+    subImage7.add(this.pixel8);
+    subImage7.add(this.pixel7);
+    subImage7.add(this.pixel6);
+    subImage7.add(this.pixel5);
 
-    ArrayList<ArrayList<Pixel>> image4 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image4 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image4.add(subImage4);
     image4.add(subImage5);
@@ -776,58 +776,58 @@ public class MyImageTest {
   }
 
   @Test
-  public void testGetPixelAt1() {
-    assertEquals(this.simplePixel1.getRed(),
+  public void testGetTransparentPixelAt1() {
+    assertEquals(this.pixel1.getRed(),
             this.simpleImage1.getPixelAt(0, 0).getRed());
-    assertEquals(this.simplePixel1.getGreen(),
+    assertEquals(this.pixel1.getGreen(),
             this.simpleImage1.getPixelAt(0, 0).getGreen());
-    assertEquals(this.simplePixel1.getBlue(),
+    assertEquals(this.pixel1.getBlue(),
             this.simpleImage1.getPixelAt(0, 0).getBlue());
   }
 
   @Test
-  public void testGetPixelAt2() {
-    assertEquals(this.simplePixel2.getRed(),
+  public void testGetTransparentPixelAt2() {
+    assertEquals(this.pixel2.getRed(),
             this.simpleImage1.getPixelAt(0, 1).getRed());
-    assertEquals(this.simplePixel2.getGreen(),
+    assertEquals(this.pixel2.getGreen(),
             this.simpleImage1.getPixelAt(0, 1).getGreen());
-    assertEquals(this.simplePixel2.getBlue(),
+    assertEquals(this.pixel2.getBlue(),
             this.simpleImage1.getPixelAt(0, 1).getBlue());
   }
 
   @Test
-  public void testGetPixelAt3() {
-    assertEquals(this.simplePixel3.getRed(),
+  public void testGetTransparentPixelAt3() {
+    assertEquals(this.pixel3.getRed(),
             this.simpleImage1.getPixelAt(1, 0).getRed());
-    assertEquals(this.simplePixel3.getGreen(),
+    assertEquals(this.pixel3.getGreen(),
             this.simpleImage1.getPixelAt(1, 0).getGreen());
-    assertEquals(this.simplePixel3.getBlue(),
+    assertEquals(this.pixel3.getBlue(),
             this.simpleImage1.getPixelAt(1, 0).getBlue());
   }
 
   @Test
-  public void testGetPixelAt4() {
-    assertEquals(this.simplePixel4.getRed(),
+  public void testGetTransparentPixelAt4() {
+    assertEquals(this.pixel4.getRed(),
             this.simpleImage1.getPixelAt(1, 1).getRed());
-    assertEquals(this.simplePixel4.getGreen(),
+    assertEquals(this.pixel4.getGreen(),
             this.simpleImage1.getPixelAt(1, 1).getGreen());
-    assertEquals(this.simplePixel4.getBlue(),
+    assertEquals(this.pixel4.getBlue(),
             this.simpleImage1.getPixelAt(1, 1).getBlue());
   }
 
   @Test
   public void testFlipHorizontally() {
-    ArrayList<Pixel> subImage4 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage4 = new ArrayList<TransparentPixel>();
 
-    subImage4.add(this.simplePixel2);
-    subImage4.add(this.simplePixel1);
+    subImage4.add(this.pixel2);
+    subImage4.add(this.pixel1);
 
-    ArrayList<Pixel> subImage5 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage5 = new ArrayList<TransparentPixel>();
 
-    subImage5.add(this.simplePixel4);
-    subImage5.add(this.simplePixel3);
+    subImage5.add(this.pixel4);
+    subImage5.add(this.pixel3);
 
-    ArrayList<ArrayList<Pixel>> image3 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image3 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image3.add(subImage4);
     image3.add(subImage5);
@@ -843,17 +843,17 @@ public class MyImageTest {
 
   @Test
   public void testFlipVertically() {
-    ArrayList<Pixel> subImage4 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage4 = new ArrayList<TransparentPixel>();
 
-    subImage4.add(this.simplePixel3);
-    subImage4.add(this.simplePixel4);
+    subImage4.add(this.pixel3);
+    subImage4.add(this.pixel4);
 
-    ArrayList<Pixel> subImage5 = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage5 = new ArrayList<TransparentPixel>();
 
-    subImage5.add(this.simplePixel1);
-    subImage5.add(this.simplePixel2);
+    subImage5.add(this.pixel1);
+    subImage5.add(this.pixel2);
 
-    ArrayList<ArrayList<Pixel>> image3 = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image3 = new ArrayList<ArrayList<TransparentPixel>>();
 
     image3.add(subImage4);
     image3.add(subImage5);
@@ -874,39 +874,39 @@ public class MyImageTest {
     components1[1] = 100;
     components1[2] = 40;
 
-    Pixel simplePixel9 = new SimplePixel(200, 100, 40);
+    TransparentPixel pixel9 = new RGBAPixel(200, 100, 40);
 
     int[] components2 = new int[3];
     components2[0] = 100;
     components2[1] = 40;
     components2[2] = 200;
 
-    Pixel simplePixel10 = new SimplePixel(components2[0], components2[1], components2[2]);
+    TransparentPixel pixel10 = new RGBAPixel(components2[0], components2[1], components2[2]);
 
     int[] components3 = new int[3];
     components3[0] = 40;
     components3[1] = 200;
     components3[2] = 100;
 
-    Pixel simplePixel11 = new SimplePixel(components3[0], components3[1], components3[2]);
+    TransparentPixel pixel11 = new RGBAPixel(components3[0], components3[1], components3[2]);
 
     int[] components4 = new int[3];
     components4[0] = 3;
     components4[1] = 29;
     components4[2] = 44;
 
-    Pixel simplePixel12 = new SimplePixel(components4[0], components4[1], components4[2]);
+    TransparentPixel pixel12 = new RGBAPixel(components4[0], components4[1], components4[2]);
 
-    ArrayList<Pixel> subImage = new ArrayList<Pixel>();
+    ArrayList<TransparentPixel> subImage = new ArrayList<TransparentPixel>();
 
-    subImage.add(simplePixel9);
-    subImage.add(simplePixel10);
+    subImage.add(pixel9);
+    subImage.add(pixel10);
 
-    ArrayList<Pixel> subImage2 = new ArrayList<Pixel>();
-    subImage2.add(simplePixel11);
-    subImage2.add(simplePixel12);
+    ArrayList<TransparentPixel> subImage2 = new ArrayList<TransparentPixel>();
+    subImage2.add(pixel11);
+    subImage2.add(pixel12);
 
-    ArrayList<ArrayList<Pixel>> image = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> image = new ArrayList<ArrayList<TransparentPixel>>();
 
     image.add(subImage);
     image.add(subImage2);

@@ -18,7 +18,7 @@ import model.image.MyImage;
 import model.image.SimpleImage;
 import model.image.operations.ImageOperation;
 import model.pixel.Pixel;
-import model.pixel.SimplePixel;
+import model.pixel.RGBAPixel;
 import model.pixel.TransparentPixel;
 
 /**
@@ -69,19 +69,19 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   private MyImage processImageWithBufferedImage(BufferedImage image) {
-    ArrayList<ArrayList<Pixel>> imageArray = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> imageArray = new ArrayList<ArrayList<TransparentPixel>>();
     for (int i = 0; i < image.getHeight(); i = i + 1) {
-      ArrayList<Pixel> row = new ArrayList<Pixel>();
-      for (int j = 0; j < image.getHeight(); j = j + 1 ) {
-        Pixel pixel;
+      ArrayList<TransparentPixel> row = new ArrayList<TransparentPixel>();
+      for (int j = 0; j < image.getWidth(); j = j + 1 ) {
+        TransparentPixel pixel;
         if (image.getColorModel().hasAlpha()) {
-          Color color = new Color(image.getRGB(i, j), true);
-          pixel = new TransparentPixel(color.getRed(), color.getGreen(),
+          Color color = new Color(image.getRGB(j, i), true);
+          pixel = new RGBAPixel(color.getRed(), color.getGreen(),
                   color.getBlue(), color.getAlpha());
         }
         else {
-          Color color = new Color(image.getRGB(i, j));
-          pixel = new SimplePixel(color.getRed(), color.getGreen(), color.getBlue());
+          Color color = new Color(image.getRGB(j, i));
+          pixel = new RGBAPixel(color.getRed(), color.getGreen(), color.getBlue());
         }
         row.add(pixel);
       }
@@ -136,15 +136,15 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
     int maxValue = scan.nextInt();
 
-    ArrayList<ArrayList<Pixel>> imageList = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> imageList = new ArrayList<ArrayList<TransparentPixel>>();
 
     for (int i = 0; i < height; i = i + 1) {
-      ArrayList<Pixel> row = new ArrayList<Pixel>();
+      ArrayList<TransparentPixel> row = new ArrayList<TransparentPixel>();
       for (int j = 0; j < width; j = j + 1) {
         int r = scan.nextInt();
         int g = scan.nextInt();
         int b = scan.nextInt();
-        Pixel pixel = new SimplePixel(r, g, b);
+        TransparentPixel pixel = new RGBAPixel(r, g, b);
         row.add(pixel);
       }
       imageList.add(row);
@@ -214,7 +214,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
     for (int i = 0; i < imageAsMyImage.getHeight(); i = i + 1) {
       for (int j = 0; j < imageAsMyImage.getWidth(); j = j + 1) {
-        Pixel curPixel = imageAsMyImage.getPixelAt(i, j);
+        TransparentPixel curPixel = imageAsMyImage.getPixelAt(i, j);
         Color pixelColor;
         if (image.getColorModel().hasAlpha()) {
           pixelColor = new Color(curPixel.getRed(), curPixel.getGreen(),

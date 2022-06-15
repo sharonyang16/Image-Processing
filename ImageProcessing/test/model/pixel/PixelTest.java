@@ -5,11 +5,15 @@ import org.junit.Test;
 
 import model.pixel.operations.BlueGreyscalePixelOperation;
 import model.pixel.operations.BrightenPixelOperation;
+import model.pixel.operations.ColorTransformationPixelOperation;
 import model.pixel.operations.DarkenPixelOperation;
 import model.pixel.operations.GreenGreyscalePixelOperation;
+import model.pixel.operations.GreyscalePixelOperation;
 import model.pixel.operations.IntensityGreyscalePixelOperation;
 import model.pixel.operations.LumaGreyscalePixelOperation;
+import model.pixel.operations.PixelOperation;
 import model.pixel.operations.RedGreyscalePixelOperation;
+import model.pixel.operations.SepiaPixelOperation;
 import model.pixel.operations.ValueGreyscalePixelOperation;
 
 import static org.junit.Assert.assertEquals;
@@ -19,6 +23,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class PixelTest {
   private Pixel simplePixel1;
+  private Pixel simplePixel2;
+  private Pixel simplePixel3;
+
 
   @Before
   public void init() {
@@ -29,6 +36,18 @@ public class PixelTest {
     components[2] = 40;
 
     this.simplePixel1 = new SimplePixel(components[0], components[1], components[2]);
+
+    int[]components2 = new int[3];
+    components2[0] = 0;
+    components2[1] = 0;
+    components2[2] = 0;
+    this.simplePixel2 = new SimplePixel(components2[0], components2[1], components2[2]);
+
+    int[] components3 = new int[3];
+    components3[0] = 255;
+    components3[1] = 255;
+    components3[2] = 255;
+    this.simplePixel3 = new SimplePixel(components3[0], components3[1], components3[2]);
   }
 
   @Test
@@ -430,5 +449,66 @@ public class PixelTest {
     assertEquals(simplePixel2.getRed(), simplePixel1.getRed());
     assertEquals(simplePixel2.getGreen(), simplePixel1.getGreen());
     assertEquals(simplePixel2.getBlue(), simplePixel1.getBlue());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidInitialization() {
+    PixelOperation op = new ColorTransformationPixelOperation(new double[][]{
+            {0.393, 0.769},
+            {0.349, 0.686}});
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidInitialization2() {
+    PixelOperation op = new ColorTransformationPixelOperation(new double[][]{
+            {0.393, 0.769},
+            {0.349, 0.686},
+            {0.272, 0.534}});
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidInitialization3() {
+    PixelOperation op = new ColorTransformationPixelOperation(new double[][]{
+            {0.393, 0.769, 0.189},
+            {0.349, 0.686}});
+  }
+
+  @Test
+  public void testSepiaPixelOp() {
+
+    this.simplePixel1.accept(new SepiaPixelOperation());
+    assertEquals(163, this.simplePixel1.getRed());
+    assertEquals(145, this.simplePixel1.getGreen());
+    assertEquals(113, this.simplePixel1.getBlue());
+
+    this.simplePixel2.accept(new SepiaPixelOperation());
+    assertEquals(0, this.simplePixel2.getRed());
+    assertEquals(0, this.simplePixel2.getGreen());
+    assertEquals(0, this.simplePixel2.getBlue());
+
+    this.simplePixel3.accept(new SepiaPixelOperation());
+    assertEquals(255, this.simplePixel3.getRed());
+    assertEquals(255, this.simplePixel3.getGreen());
+    assertEquals(238, this.simplePixel3.getBlue());
+
+  }
+
+  @Test
+  public void testGreyscalePixelOp() {
+
+    this.simplePixel1.accept(new GreyscalePixelOperation());
+    assertEquals(116, this.simplePixel1.getRed());
+    assertEquals(116, this.simplePixel1.getGreen());
+    assertEquals(116, this.simplePixel1.getBlue());
+
+    this.simplePixel2.accept(new GreyscalePixelOperation());
+    assertEquals(0, this.simplePixel2.getRed());
+    assertEquals(0, this.simplePixel2.getGreen());
+    assertEquals(0, this.simplePixel2.getBlue());
+
+    this.simplePixel3.accept(new GreenGreyscalePixelOperation());
+    assertEquals(255, this.simplePixel3.getRed());
+    assertEquals(255, this.simplePixel3.getGreen());
+    assertEquals(255, this.simplePixel3.getBlue());
   }
 }

@@ -1,5 +1,7 @@
 package model.image.operations;
 
+import java.util.ArrayList;
+
 import model.image.MyImage;
 
 /**
@@ -28,11 +30,29 @@ public class FilterImageOperation implements ImageOperation {
 
   @Override
   public void execute(MyImage image) {
+    ArrayList<ArrayList<ArrayList<Integer>>> colors = new ArrayList<>();
+
+
+    for (int i = 0; i < image.getHeight(); i = i + 1) {
+      ArrayList<ArrayList<Integer>> row = new ArrayList<>();
+      for (int j = 0; j < image.getWidth(); j = j + 1) {
+        ArrayList<Integer> components = new ArrayList<>();
+
+        components.add(this.applyFilter(i, j, image, RGBColor.RED));
+        components.add(this.applyFilter(i, j, image, RGBColor.GREEN));
+        components.add(this.applyFilter(i, j, image, RGBColor.BLUE));
+
+        row.add(components);
+      }
+
+      colors.add(row);
+    }
+
     for (int i = 0; i < image.getHeight(); i = i + 1) {
       for (int j = 0; j < image.getWidth(); j = j + 1) {
-        image.getPixelAt(i, j).setRed(this.applyFilter(i, j, image, RGBColor.RED));
-        image.getPixelAt(i, j).setGreen(this.applyFilter(i, j, image, RGBColor.GREEN));
-        image.getPixelAt(i, j).setBlue(this.applyFilter(i, j, image, RGBColor.BLUE));
+        image.getPixelAt(i, j).setRed(colors.get(i).get(j).get(0));
+        image.getPixelAt(i, j).setGreen(colors.get(i).get(j).get(1));
+        image.getPixelAt(i, j).setBlue(colors.get(i).get(j).get(2));
       }
     }
   }
@@ -42,21 +62,20 @@ public class FilterImageOperation implements ImageOperation {
     int distFromFilterCenter = filter.length / 2;
     for (int i = 0; i < filter.length; i = i + 1) {
       for (int j = 0; j < filter[i].length; j = j + 1) {
-        if (this.isValid(1, 1, image)) {
+        int curRow = row - distFromFilterCenter + i;
+        int curCol = col - distFromFilterCenter + j;
+        if (this.isValid(curRow, curCol, image)) {
+
           int valueAtPixel;
           if (color == RGBColor.RED) {
-            valueAtPixel = image.getPixelAt(
-                    row - distFromFilterCenter + i, col - distFromFilterCenter + j).getRed();
+            valueAtPixel = image.getPixelAt(curRow, curCol).getRed();
           }
           else if (color == RGBColor.GREEN) {
-            valueAtPixel = image.getPixelAt(
-                    row - distFromFilterCenter + i, col - distFromFilterCenter + j).getGreen();
+            valueAtPixel = image.getPixelAt(curRow, curCol).getGreen();
           }
           else {
-            valueAtPixel = image.getPixelAt(
-                    row - distFromFilterCenter + i, col - distFromFilterCenter + j).getBlue();
+            valueAtPixel = image.getPixelAt(curRow, curCol).getBlue();
           }
-
           sum += filter[i][j] * valueAtPixel;
         }
       }

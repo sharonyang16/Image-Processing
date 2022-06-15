@@ -47,10 +47,6 @@ public class SimplePixel implements Pixel {
     return components[2];
   }
 
-  @Override
-  public int getAlpha() {
-    return 255;
-  }
 
   @Override
   public void setRed(int red) {
@@ -98,7 +94,7 @@ public class SimplePixel implements Pixel {
     }
   }
 
-  private int clampHelper(int value) {
+  public static int clampHelper(int value) {
     if (value < 0) {
       return 0;
     }

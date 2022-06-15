@@ -3,13 +3,13 @@ package model.image;
 import java.util.ArrayList;
 
 import model.image.operations.ImageOperation;
-import model.pixel.Pixel;
+import model.pixel.TransparentPixel;
 
 /**
  * This class represents an image with operations allowing it to be mutated.
  */
 public class SimpleImage implements MyImage {
-  private ArrayList<ArrayList<Pixel>> image;
+  private ArrayList<ArrayList<TransparentPixel>> image;
 
   /**
    * Creates a simple image with the given 2D ArrayList representing an image. Throws an exception
@@ -19,7 +19,7 @@ public class SimpleImage implements MyImage {
    * @param image the 2D array representing the desired image
    * @throws IllegalArgumentException if the given 2D ArrayList is invalid
    */
-  public SimpleImage(ArrayList<ArrayList<Pixel>> image) throws IllegalArgumentException {
+  public SimpleImage(ArrayList<ArrayList<TransparentPixel>> image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null!");
     }
@@ -48,7 +48,7 @@ public class SimpleImage implements MyImage {
   }
 
   @Override
-  public Pixel getPixelAt(int row, int col) {
+  public TransparentPixel getPixelAt(int row, int col) {
     return this.image.get(row).get(col);
   }
 
@@ -57,8 +57,8 @@ public class SimpleImage implements MyImage {
     for (int i = 0; i < this.getHeight(); i = i + 1) {
       for (int j = 0; j < this.getWidth() / 2; j = j + 1) {
         // swaps the pixels from the left and right
-        Pixel front = this.getPixelAt(i, j);
-        Pixel back = this.getPixelAt(i, this.getWidth() - 1 - j);
+        TransparentPixel front = this.getPixelAt(i, j);
+        TransparentPixel back = this.getPixelAt(i, this.getWidth() - 1 - j);
         this.image.get(i).set(j, back);
         this.image.get(i).set(this.getWidth() - 1 - j, front);
       }
@@ -70,8 +70,8 @@ public class SimpleImage implements MyImage {
     for (int i = 0; i < this.getHeight() / 2; i = i + 1) {
       for (int j = 0; j < this.getWidth(); j = j + 1) {
         // swaps the pixels fom the bottom and top
-        Pixel front = this.getPixelAt(i, j);
-        Pixel back = this.getPixelAt(this.getHeight() - 1 - i, j);
+        TransparentPixel front = this.getPixelAt(i, j);
+        TransparentPixel back = this.getPixelAt(this.getHeight() - 1 - i, j);
         this.image.get(i).set(j, back);
         this.image.get(this.getHeight() - 1 - i).set(j, front);
       }
@@ -80,12 +80,12 @@ public class SimpleImage implements MyImage {
 
   @Override
   public MyImage getCopy() {
-    ArrayList<ArrayList<Pixel>> copied = new ArrayList<ArrayList<Pixel>>();
+    ArrayList<ArrayList<TransparentPixel>> copied = new ArrayList<ArrayList<TransparentPixel>>();
     // creates a 2D array of a copied version of each pixel in this image
     for (int i = 0; i < this.getHeight(); i++) {
-      ArrayList<Pixel> row = new ArrayList<Pixel>();
+      ArrayList<TransparentPixel> row = new ArrayList<TransparentPixel>();
       for (int j = 0; j < this.getWidth(); j = j + 1) {
-        row.add(this.image.get(i).get(j).getCopy());
+        row.add(this.getPixelAt(i, j).getCopy());
       }
       copied.add(row);
     }

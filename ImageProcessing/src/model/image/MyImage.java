@@ -1,7 +1,7 @@
 package model.image;
 
 import model.image.operations.ImageOperation;
-import model.pixel.Pixel;
+import model.pixel.TransparentPixel;
 
 /**
  * This interface represents an image represented by pixels. This image is able to be mutated.
@@ -27,15 +27,7 @@ public interface MyImage {
    */
   int getWidth();
 
-  /**
-   * Returns the pixel at the given row and column.
-   *
-   * @param row the row of the desired pixel
-   * @param col the column of the desired pixel
-   * @return the pixel at the given row and column
-   * @throws IllegalArgumentException if the given position is an invalid spot for this image
-   */
-  Pixel getPixelAt(int row, int col) throws IllegalArgumentException;
+  TransparentPixel getPixelAt(int row, int col);
 
   /**
    * Flips this image horizontally.
