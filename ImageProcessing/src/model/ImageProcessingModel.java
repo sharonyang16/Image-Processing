@@ -18,7 +18,7 @@ public interface ImageProcessingModel {
   void loadFile(String filePath, String name) throws IllegalArgumentException;
 
   /**
-   * Performs the given operation on a copy of an imaged already saved in this model and saves it
+   * Performs the given operation on a copy of an image already saved in this model and saves it
    * to this model under the new name.
    *
    * @param originalName the name of the image already in the model

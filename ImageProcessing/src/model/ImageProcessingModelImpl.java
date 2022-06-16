@@ -62,7 +62,6 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       catch (IOException e) {
         throw new IllegalArgumentException("Error reading file");
       }
-
     }
     else {
       throw new IllegalArgumentException("Unsupported file type!");

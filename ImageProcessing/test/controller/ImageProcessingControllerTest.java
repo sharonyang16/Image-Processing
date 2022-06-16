@@ -106,13 +106,71 @@ public class ImageProcessingControllerTest {
   }
 
   @Test
-  public void testExecuteLoad() {
+  public void testExecuteLoadPPM() {
     setInputs("load res/Landscape.ppm landscape");
 
     String outString = out.toString();
 
     // should print when there's a command is completed successfully
     assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used load on image)"));
+
+    // the model should be able to return an image with the given name now
+    try {
+      model.getImageNamed("landscape");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testExecuteLoadJPG() {
+    setInputs("load res/Landscape.jpg landscape");
+
+    String outString = out.toString();
+
+    // should print when there's a command is completed successfully
+    assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used load on image)"));
+
+    // the model should be able to return an image with the given name now
+    try {
+      model.getImageNamed("landscape");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testExecuteLoadPNG() {
+    setInputs("load res/Landscape.png landscape");
+
+    String outString = out.toString();
+
+    // should print when there's a command is completed successfully
+    assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used load on image)"));
+
+    // the model should be able to return an image with the given name now
+    try {
+      model.getImageNamed("landscape");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testExecuteLoadBMP() {
+    setInputs("load res/Landscape.bmp landscape");
+
+    String outString = out.toString();
+
+    // should print when there's a command is completed successfully
+    assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used load on image)"));
 
     // the model should be able to return an image with the given name now
     try {
@@ -125,11 +183,11 @@ public class ImageProcessingControllerTest {
 
   @Test
   public void testExecuteLoadInvalid() {
-    setInputs("load res/Landscape.jpg landscape");
+    setInputs("load res/Landscape.txt landscape");
 
     String outString = out.toString();
 
-    // renders this message as it's provided a jpg file
+    // renders this message as it's provided a txt file
     assertTrue(outString.contains("Command unsuccessful! Unsupported file type!"));
 
     setInputs("load abc.ppm landscape");
@@ -145,12 +203,23 @@ public class ImageProcessingControllerTest {
     setInputs("load res/Landscape.ppm landscape red-greyscale landscape red "
             + "green-greyscale landscape green blue-greyscale landscape blue "
             + "value-greyscale landscape value intensity-greyscale landscape intensity "
-            + "luma-greyscale landscape luma");
+            + "luma-greyscale landscape luma "
+            + "greyscale landscape greyscale ");
 
     String outString = out.toString();
 
     // should be false as all the inputs were valid
     assertFalse(outString.contains("Command unsuccessful!"));
+
+    assertTrue(outString.contains("(used load on image)"));
+    assertTrue(outString.contains("(used red-greyscale on image)"));
+    assertTrue(outString.contains("(used green-greyscale on image)"));
+    assertTrue(outString.contains("(used blue-greyscale on image)"));
+    assertTrue(outString.contains("(used value-greyscale on image)"));
+    assertTrue(outString.contains("(used intensity-greyscale on image)"));
+    assertTrue(outString.contains("(used luma-greyscale on image)"));
+    assertTrue(outString.contains("(used greyscale on image)"));
+
 
     // the model should be able to return these images since it was loaded properly
     try {
@@ -161,6 +230,7 @@ public class ImageProcessingControllerTest {
       model.getImageNamed("value");
       model.getImageNamed("intensity");
       model.getImageNamed("luma");
+      model.getImageNamed("greyscale");
     }
     catch (IllegalArgumentException e) {
       fail("Exception thrown");
@@ -173,6 +243,7 @@ public class ImageProcessingControllerTest {
     MyImage valueImage = model.getImageNamed("value");
     MyImage intensityImage = model.getImageNamed("intensity");
     MyImage lumaImage = model.getImageNamed("luma");
+    MyImage greyscaleImage = model.getImageNamed("greyscale");
 
     Pixel originalPixel;
     Pixel redImagePixel;
@@ -181,6 +252,7 @@ public class ImageProcessingControllerTest {
     Pixel valueImagePixel;
     Pixel intensityImagePixel;
     Pixel lumaImagePixel;
+    Pixel greyscalePixel;
 
     int value;
     int intensity;
@@ -196,6 +268,7 @@ public class ImageProcessingControllerTest {
         valueImagePixel = valueImage.getPixelAt(i, j);
         intensityImagePixel = intensityImage.getPixelAt(i, j);
         lumaImagePixel = lumaImage.getPixelAt(i, j);
+        greyscalePixel = greyscaleImage.getPixelAt(i, j);
 
         value = Math.max(originalPixel.getGreen(),
                 Math.max(originalPixel.getRed(), originalPixel.getBlue()));
@@ -227,6 +300,61 @@ public class ImageProcessingControllerTest {
         assertEquals(luma, lumaImagePixel.getRed());
         assertEquals(luma, lumaImagePixel.getGreen());
         assertEquals(luma, lumaImagePixel.getBlue());
+
+        assertEquals(luma, greyscalePixel.getRed());
+        assertEquals(luma, greyscalePixel.getGreen());
+        assertEquals(luma, greyscalePixel.getBlue());
+      }
+    }
+  }
+
+  @Test
+  public void testExecuteSepia() {
+    setInputs("load res/Landscape.ppm landscape sepia landscape sepia");
+
+    String outString = out.toString();
+
+    // should be false as all the inputs were valid
+    assertFalse(outString.contains("Command unsuccessful!"));
+
+    assertTrue(outString.contains("(used sepia on image)"));
+
+    // the model should be able to return these images since it was loaded properly
+    try {
+      model.getImageNamed("landscape");
+      model.getImageNamed("sepia");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+
+    MyImage original = model.getImageNamed("landscape");
+    MyImage sepiaImage = model.getImageNamed("sepia");
+
+    Pixel originalPixel;
+    Pixel sepiaPixel;
+
+    int sepiaRed;
+    int sepiaGreen;
+    int sepiaBlue;
+
+    for (int i = 0; i < original.getHeight(); i++) {
+      for (int j = 0; j < original.getWidth(); j++) {
+        originalPixel = original.getPixelAt(i, j);
+        sepiaPixel = sepiaImage.getPixelAt(i, j);
+        sepiaRed = clampHelper((int) ((0.393 * originalPixel.getRed())
+                + (0.769 * originalPixel.getGreen())
+                + (0.189 * originalPixel.getBlue())), 0);
+        sepiaGreen = clampHelper((int) ((0.349 * originalPixel.getRed())
+                + (0.686 * originalPixel.getGreen())
+                + (0.168 * originalPixel.getBlue())), 0);
+        sepiaBlue = clampHelper((int) ((0.272 * originalPixel.getRed())
+                + (0.534 * originalPixel.getGreen())
+                + (0.131 * originalPixel.getBlue())), 0);
+
+        assertEquals(sepiaRed, sepiaPixel.getRed());
+        assertEquals(sepiaGreen, sepiaPixel.getGreen());
+        assertEquals(sepiaBlue, sepiaPixel.getBlue());
       }
     }
   }
@@ -303,7 +431,7 @@ public class ImageProcessingControllerTest {
   }
 
   @Test
-  public void testExecuteSave() {
+  public void testExecuteSavePPM() {
     setInputs("load res/Landscape.ppm landscape luma-greyscale landscape red "
             + "save res/Landscape-luma.ppm luma-greyscale");
 
@@ -311,6 +439,52 @@ public class ImageProcessingControllerTest {
 
     // should print when there's a command is completed successfully
     assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used save on image)"));
+
+    // should be false as all the inputs were valid
+    assertFalse(outString.contains("Command unsuccessful!"));
+  }
+
+  @Test
+  public void testExecuteSaveJPG() {
+    setInputs("load res/Landscape.ppm landscape luma-greyscale landscape red "
+            + "save res/Landscape-luma.jpg luma-greyscale");
+
+    String outString = out.toString();
+
+    // should print when there's a command is completed successfully
+    assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used save on image)"));
+
+    // should be false as all the inputs were valid
+    assertFalse(outString.contains("Command unsuccessful!"));
+  }
+
+  @Test
+  public void testExecuteSavePNG() {
+    setInputs("load res/Landscape.bmp landscape luma-greyscale landscape red "
+            + "save res/Landscape-luma.png luma-greyscale");
+
+    String outString = out.toString();
+
+    // should print when there's a command is completed successfully
+    assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used save on image)"));
+
+    // should be false as all the inputs were valid
+    assertFalse(outString.contains("Command unsuccessful!"));
+  }
+
+  @Test
+  public void testExecuteSaveBMP() {
+    setInputs("load res/Landscape.jpg landscape luma-greyscale landscape red "
+            + "save res/Landscape-luma.bmp luma-greyscale");
+
+    String outString = out.toString();
+
+    // should print when there's a command is completed successfully
+    assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used save on image)"));
 
     // should be false as all the inputs were valid
     assertFalse(outString.contains("Command unsuccessful!"));
@@ -335,7 +509,6 @@ public class ImageProcessingControllerTest {
 
     assertTrue(outString.contains("Command unsuccessful! Image not found."));
   }
-
 
   @Test
   public void testExecuteAdjustBrightInvalidNumber() {
