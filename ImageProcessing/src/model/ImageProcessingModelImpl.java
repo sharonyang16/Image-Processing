@@ -24,7 +24,8 @@ import model.pixel.TransparentPixel;
 /**
  * This class represents an implementation of a model for an image processing application. It
  * specifically implements the ImageProcessingModel interface. Currently, this model only supports
- * loading, storing, and saving PPM files.
+ * loading, storing, and saving PPM, JPG, PNG, and BMP files. Previously, only able to support PPM
+ * files.
  */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
   private Map<String, MyImage> images;
@@ -68,17 +69,29 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
   }
 
+  /**
+   * Creates a MyImage object representation using the data from the given BufferedImage.
+   * Currently used to load in JPG, PNG, and BMP files.
+   *
+   * @param image the BufferedImage
+   * @return a MyImage version of the BufferedImage
+   */
   private MyImage processImageWithBufferedImage(BufferedImage image) {
-    ArrayList<ArrayList<TransparentPixel>> imageArray = new ArrayList<ArrayList<TransparentPixel>>();
+    ArrayList<ArrayList<TransparentPixel>> imageArray
+            = new ArrayList<ArrayList<TransparentPixel>>();
+
+    // builds the image pixel by pixel
     for (int i = 0; i < image.getHeight(); i = i + 1) {
       ArrayList<TransparentPixel> row = new ArrayList<TransparentPixel>();
       for (int j = 0; j < image.getWidth(); j = j + 1 ) {
         TransparentPixel pixel;
+        // if the original image supports alpha, use the alpha
         if (image.getColorModel().hasAlpha()) {
           Color color = new Color(image.getRGB(j, i), true);
           pixel = new RGBAPixel(color.getRed(), color.getGreen(),
                   color.getBlue(), color.getAlpha());
         }
+        // else, use the constructor that automatically makes it opaque
         else {
           Color color = new Color(image.getRGB(j, i));
           pixel = new RGBAPixel(color.getRed(), color.getGreen(), color.getBlue());
@@ -87,11 +100,12 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       }
       imageArray.add(row);
     }
+
     return new SimpleImage(imageArray);
   }
 
   /**
-   * Processes the given PPM file as a SimpleImage created of SimplePixel objects and returns it.
+   * Processes the given PPM file as a SimpleImage created of TransparentPixel objects and returns it.
    *
    * @param filePath the name of the image file/the path of the image file being processed
    * @return the SimpleImage created representing the image from the given file path
@@ -144,7 +158,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
         int r = scan.nextInt();
         int g = scan.nextInt();
         int b = scan.nextInt();
-        TransparentPixel pixel = new RGBAPixel(r, g, b);
+        TransparentPixel pixel = new RGBAPixel(r, g, b); // CHANGED
         row.add(pixel);
       }
       imageList.add(row);
@@ -172,12 +186,12 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   /**
    * Writes an image file of the given file name with the image saved in this model of the given
-   * name. Currently is only able save images as a PPM file; will throw an exception of the file
-   * name does not match that of a PPM file.
+   * name. Currently is able save images as a PPM, JPG, PNG, or BMP file; will throw an exception
+   * if the file name does not match that of a supported file type.
    *
    * @param fileName the name of the file being saved
    * @param name the image in this model that's being saved as a file
-   * @throws IllegalArgumentException if the file being written isn't a PPM file
+   * @throws IllegalArgumentException if the file being written isn't a supported format
    */
   @Override
   public void saveAs(String fileName, String name) throws IllegalArgumentException {
@@ -193,6 +207,15 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   }
 
+  /**
+   * Uses a BufferedImage object to write an image file of the given file name with the image saved
+   * in this model of the given name. Used to save images from this model as JPG, PNG, and BMP
+   * files.
+   *
+   * @param fileName the name of the file being saved
+   * @param name the image in this model that's being saved as a file
+   * @throws IllegalArgumentException  if the desired image cannot be found in this model
+   */
   private void saveAsWithBufferedImage(String fileName, String name)
           throws IllegalArgumentException {
     MyImage imageAsMyImage = this.images.getOrDefault(name, null);
@@ -202,7 +225,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
 
     int imageType;
-    if (fileName.endsWith("jpg")) {
+    if (!fileName.endsWith("png")) {
       imageType = BufferedImage.TYPE_INT_RGB;
     }
     else {
@@ -212,22 +235,25 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     BufferedImage image
             = new BufferedImage(imageAsMyImage.getWidth(), imageAsMyImage.getHeight(), imageType);
 
+    // builds the BufferedImage pixel by pixel
     for (int i = 0; i < imageAsMyImage.getHeight(); i = i + 1) {
       for (int j = 0; j < imageAsMyImage.getWidth(); j = j + 1) {
         TransparentPixel curPixel = imageAsMyImage.getPixelAt(i, j);
         Color pixelColor;
+        // if the new file supports alpha channels, use the current pixel's alpha channel
         if (image.getColorModel().hasAlpha()) {
           pixelColor = new Color(curPixel.getRed(), curPixel.getGreen(),
                   curPixel.getBlue(), curPixel.getAlpha());
         }
+        // else, don't use it
         else {
           pixelColor = new Color(curPixel.getRed(), curPixel.getGreen(), curPixel.getBlue());
         }
         image.setRGB(j, i, pixelColor.getRGB());
-
       }
     }
 
+    // the file format
     String fileType = fileName.substring(fileName.length() - 3);
 
     try {
@@ -235,7 +261,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       ImageIO.write(image, fileType, file);
     }
     catch (IOException e) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Could not write file.");
     }
 
   }

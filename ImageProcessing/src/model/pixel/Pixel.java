@@ -3,7 +3,8 @@ package model.pixel;
 import model.pixel.operations.PixelOperation;
 
 /**
- * This interface represents a pixel of an image.
+ * This interface represents a pixel of an image. This pixel only supports RGB components, no alpha
+ * channel.
  */
 public interface Pixel {
   /**
@@ -34,10 +35,25 @@ public interface Pixel {
    */
   int getBlue();
 
+  /**
+   * Sets the red channel of this pixel to the given value.
+   *
+   * @param red the desired value of the red channel
+   */
   void setRed(int red);
 
+  /**
+   * Sets the green channel of this pixel to the given value.
+   *
+   * @param green the desired value of the green channel
+   */
   void setGreen(int green);
 
+  /**
+   * Sets the blue channel of this pixel to the given value.
+   *
+   * @param blue the desired value of the blue channel
+   */
   void setBlue(int blue);
 
   /**

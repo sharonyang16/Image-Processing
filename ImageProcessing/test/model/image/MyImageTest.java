@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import model.image.operations.BlueGreyscaleImageOperation;
 import model.image.operations.BrightenImageOperation;
@@ -15,9 +16,8 @@ import model.image.operations.IntensityGreyscaleImageOperation;
 import model.image.operations.LumaGreyscaleImageOperation;
 import model.image.operations.RedGreyscaleImageOperation;
 import model.image.operations.ValueGreyscaleImageOperation;
-import model.pixel.TransparentPixel;
 import model.pixel.RGBAPixel;
-
+import model.pixel.TransparentPixel;
 
 import static org.junit.Assert.assertEquals;
 
@@ -843,23 +843,14 @@ public class MyImageTest {
 
   @Test
   public void testFlipVertically() {
-    ArrayList<TransparentPixel> subImage4 = new ArrayList<TransparentPixel>();
-
-    subImage4.add(this.pixel3);
-    subImage4.add(this.pixel4);
-
-    ArrayList<TransparentPixel> subImage5 = new ArrayList<TransparentPixel>();
-
-    subImage5.add(this.pixel1);
-    subImage5.add(this.pixel2);
-
-    ArrayList<ArrayList<TransparentPixel>> image3 = new ArrayList<ArrayList<TransparentPixel>>();
-
-    image3.add(subImage4);
-    image3.add(subImage5);
+    ArrayList<TransparentPixel> subImage4
+            = new ArrayList<TransparentPixel>(Arrays.asList(this.pixel3, this.pixel4));
+    ArrayList<TransparentPixel> subImage5
+            = new ArrayList<TransparentPixel>(Arrays.asList(this.pixel1, this.pixel2));
+    ArrayList<ArrayList<TransparentPixel>> image3
+            = new ArrayList<ArrayList<TransparentPixel>>(Arrays.asList(subImage4, subImage5));
 
     MyImage simpleImage3 = new SimpleImage(image3);
-
     this.simpleImage1.flipVertically();
 
     assertEquals(2, simpleImage3.getHeight());
@@ -869,48 +860,17 @@ public class MyImageTest {
 
   @Test
   public void testGetCopy() {
-    int[] components1 = new int[3];
-    components1[0] = 200;
-    components1[1] = 100;
-    components1[2] = 40;
-
     TransparentPixel pixel9 = new RGBAPixel(200, 100, 40);
+    TransparentPixel pixel10 = new RGBAPixel(100, 40, 200);
+    TransparentPixel pixel11 = new RGBAPixel(40, 200, 100);
+    TransparentPixel pixel12 = new RGBAPixel(3, 29, 44);
 
-    int[] components2 = new int[3];
-    components2[0] = 100;
-    components2[1] = 40;
-    components2[2] = 200;
-
-    TransparentPixel pixel10 = new RGBAPixel(components2[0], components2[1], components2[2]);
-
-    int[] components3 = new int[3];
-    components3[0] = 40;
-    components3[1] = 200;
-    components3[2] = 100;
-
-    TransparentPixel pixel11 = new RGBAPixel(components3[0], components3[1], components3[2]);
-
-    int[] components4 = new int[3];
-    components4[0] = 3;
-    components4[1] = 29;
-    components4[2] = 44;
-
-    TransparentPixel pixel12 = new RGBAPixel(components4[0], components4[1], components4[2]);
-
-    ArrayList<TransparentPixel> subImage = new ArrayList<TransparentPixel>();
-
-    subImage.add(pixel9);
-    subImage.add(pixel10);
-
-    ArrayList<TransparentPixel> subImage2 = new ArrayList<TransparentPixel>();
-    subImage2.add(pixel11);
-    subImage2.add(pixel12);
-
-    ArrayList<ArrayList<TransparentPixel>> image = new ArrayList<ArrayList<TransparentPixel>>();
-
-    image.add(subImage);
-    image.add(subImage2);
-
+    ArrayList<TransparentPixel> subImage
+            = new ArrayList<TransparentPixel>(Arrays.asList(pixel9, pixel10));
+    ArrayList<TransparentPixel> subImage2
+            = new ArrayList<TransparentPixel>(Arrays.asList(pixel11, pixel12));
+    ArrayList<ArrayList<TransparentPixel>> image
+            = new ArrayList<ArrayList<TransparentPixel>>(Arrays.asList(subImage, subImage2));
     MyImage simpleImage3 = new SimpleImage(image);
 
     assertEquals(2, simpleImage3.getHeight());

@@ -4,7 +4,8 @@ import model.image.operations.ImageOperation;
 import model.pixel.TransparentPixel;
 
 /**
- * This interface represents an image represented by pixels. This image is able to be mutated.
+ * This interface represents an image represented by pixels with RGBA components.
+ * This image is able to be mutated.
  */
 public interface MyImage {
   /**

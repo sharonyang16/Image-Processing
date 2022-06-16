@@ -45,9 +45,11 @@ The ImageProcessingController interface represents the controller for an image p
 The ImageProcessingControllerImpl is an implementation of the ImageProcessingController interface. It's fields include an ImageProccessingModel,
 an ImageProcessingView, and a Scanner. This implementation follows the command design pattern and uses a HashMap to store the known commands
 to reduce having long code chunks (having a super long switch statement with a case for every command and having a lot of code within each of 
-those cases). This implementation also has a private method that renders the menu of options and gives feedback on commands performed (if they were
-successful or not and what caused them to be unsuccessful if they were) so the user is able to see what they're doing without being able to see 
-the actual image.
+those cases). In order to implement the command design pattern, inputs made after calling a valid command (such as "red-greyscale" or 
+"flip-horizontally") need to finish the command in order to quit the program. The commands reads the next 2 (next 3 for the brightening and darkening
+operations) inputs to execute the command. Having "q" or "quit" in the position of one of these inputs will not cause the program to quit.
+This implementation also has a private method that renders the menu of options and gives feedback on commands performed (if they were successful
+or not and what caused them to be unsuccessful if they were) so the user is able to see what they're doing without being able to see the actual image.
 
 The ImageProcessingCommand interface represents the commands that can be run in the ImageProcessingController and has a method to execute the command
 onto the model.The ImageCommand class implements represents any command that edits a picture in this application as the model has the capability to 

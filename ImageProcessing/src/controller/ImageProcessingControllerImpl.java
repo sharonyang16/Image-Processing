@@ -31,9 +31,9 @@ import view.ImageProcessingView;
 /**
  * This class represents an implementation of a controller for an image processing application. It
  * specifically implements the ImageProcessingController interface. Currently supports the following
- * commands: load, red-greyscale, green-greyscale, blue-greyscale, value-greyscale,
+ * script commands: load, red-greyscale, green-greyscale, blue-greyscale, value-greyscale,
  * intensity-greyscale, luma-greyscale, flip-horizontally, flip-vertically, brighten, darken,
- * and save.
+ * blur, sharpen, greyscale, sepia, and save.
  */
 public class ImageProcessingControllerImpl implements ImageProcessingController {
   private ImageProcessingModel model;
@@ -105,19 +105,19 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
     this.knownCommands.put("blur",
             (Scanner s) -> {
               return new ImageCommand(
-                      s.next(), s.next(), new BlurImageOperation()); });
+                      s.next(), s.next(), new BlurImageOperation()); }); //ADDED
     this.knownCommands.put("sharpen",
             (Scanner s) -> {
               return new ImageCommand(
-                      s.next(), s.next(), new SharpenImageOperation()); });
+                      s.next(), s.next(), new SharpenImageOperation()); }); //ADDED
     this.knownCommands.put("greyscale",
             (Scanner s) -> {
               return new ImageCommand(
-                      s.next(), s.next(), new GreyscaleImageOperation()); });
+                      s.next(), s.next(), new GreyscaleImageOperation()); }); //ADDED
     this.knownCommands.put("sepia",
             (Scanner s) -> {
               return new ImageCommand(
-                      s.next(), s.next(), new SepiaImageOperation()); });
+                      s.next(), s.next(), new SepiaImageOperation()); }); //ADDED
     this.knownCommands.put("save",
         (Scanner s) -> {
           return new Save(s.next(), s.next()); });
@@ -131,7 +131,8 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
    * program being unable to transmit a message. Once the user begins a valid command, they are
    * unable to quit until the command is fully completed; for example, if the user begins the
    * blue-greyscale command, they must provide two more inputs (they can be valid or invalid)
-   * before they are able to quit through entering "q" or "quit".
+   * before they are able to quit through entering "q" or "quit". The user receives feedback after
+   * completing commands (whether they were completed successfully or if something went wrong).
    *
    * @throws IllegalStateException if transmission fails
    */
@@ -191,7 +192,7 @@ public class ImageProcessingControllerImpl implements ImageProcessingController 
         try {
           c.execute(model);
           try {
-            this.view.renderMessage("Command successful!");
+            this.view.renderMessage("Command successful! (used " + in +" on image)"); // CHANGE
           }
           catch (IOException e) {
             throw new IllegalStateException("Failed to transmit message");

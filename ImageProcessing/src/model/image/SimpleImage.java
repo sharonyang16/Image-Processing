@@ -6,7 +6,8 @@ import model.image.operations.ImageOperation;
 import model.pixel.TransparentPixel;
 
 /**
- * This class represents an image with operations allowing it to be mutated.
+ * This class represents an image that's a collection of pixels with RGBA components with operations
+ * allowing it to be mutated.
  */
 public class SimpleImage implements MyImage {
   private ArrayList<ArrayList<TransparentPixel>> image;

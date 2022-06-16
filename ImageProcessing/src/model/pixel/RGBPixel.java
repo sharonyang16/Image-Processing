@@ -5,9 +5,10 @@ import model.pixel.operations.PixelOperation;
 /**
  * This class represents a pixel that has 3 components, representing the RGB values.
  * Each channel is represented in 8-bit, meaning the minimum value of each component is 0
- * and the maximum value of each component is 255.
+ * and the maximum value of each component is 255. Previously named SimplePixel, but was changed
+ * to better represent the purpose of the class.
  */
-public class SimplePixel implements Pixel {
+public class RGBPixel implements Pixel {
   private int[] components = new int[3];
 
   /**
@@ -18,7 +19,7 @@ public class SimplePixel implements Pixel {
    * @param blue the value of the blue component
    * @throws IllegalArgumentException a value given cannot be represented in 8-bit
    */
-  public SimplePixel(int red, int green, int blue) throws IllegalArgumentException {
+  public RGBPixel(int red, int green, int blue) throws IllegalArgumentException {
     if (red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255) {
       throw new IllegalArgumentException("Invalid RGB component value.");
     }
@@ -47,17 +48,34 @@ public class SimplePixel implements Pixel {
     return components[2];
   }
 
-
+  /**
+   * Sets the red channel of this pixel to the given value. Automatically clamps the value to
+   * 0 or 255 if the given value goes under or over the minimum or maximum respectively.
+   *
+   * @param red the desired value of the red channel
+   */
   @Override
   public void setRed(int red) {
     this.components[0] = clampHelper(red);
   }
 
+  /**
+   * Sets the green channel of this pixel to the given value. Automatically clamps the value to
+   * 0 or 255 if the given value goes under or over the minimum or maximum respectively.
+   *
+   * @param green the desired value of the green channel
+   */
   @Override
   public void setGreen(int green) {
     this.components[1] = clampHelper(green);
   }
 
+  /**
+   * Sets the blue channel of this pixel to the given value. Automatically clamps the value to
+   * 0 or 255 if the given value goes under or over the minimum or maximum respectively.
+   *
+   * @param blue the desired value of the blue channel
+   */
   @Override
   public void setBlue(int blue) {
     this.components[2] = clampHelper(blue);
@@ -94,13 +112,23 @@ public class SimplePixel implements Pixel {
     }
   }
 
-  public static int clampHelper(int value) {
+  /**
+   * Helper method that analyzes the given value and returns a value in between the maximum and
+   * minimum for an 8-bit representation.
+   *
+   * @param value the value being analyzed
+   * @return 0, 255, or the original value
+   */
+  protected static int clampHelper(int value) {
+    // if the value is under 0, clamp it to 0
     if (value < 0) {
       return 0;
     }
+    // if the value is over 255, clamp it to 255
     else if (value > 255) {
       return 255;
     }
+    // else, return the same as it's already between 0 and 255
     else {
       return value;
     }
@@ -108,6 +136,6 @@ public class SimplePixel implements Pixel {
 
   @Override
   public Pixel getCopy() {
-    return new SimplePixel(components[0], components[1], components[2]);
+    return new RGBPixel(components[0], components[1], components[2]);
   }
 }
