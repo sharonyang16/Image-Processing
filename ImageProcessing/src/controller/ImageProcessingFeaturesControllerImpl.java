@@ -7,7 +7,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 
-import model.CurrentImageProcessingModel;
 import model.ImageProcessingModel;
 import model.image.MyImage;
 import model.pixel.TransparentPixel;
@@ -21,7 +20,7 @@ public class ImageProcessingFeaturesControllerImpl implements ImageProcessingFea
   private StringReader inputs;
 
   public ImageProcessingFeaturesControllerImpl
-          (ImageProcessingGUIView view, CurrentImageProcessingModel model)
+          (ImageProcessingGUIView view, ImageProcessingModel model)
           throws IllegalArgumentException {
     if (view == null || model == null) {
       throw new IllegalArgumentException("View or model is null!");
@@ -37,7 +36,7 @@ public class ImageProcessingFeaturesControllerImpl implements ImageProcessingFea
         this.view.buttonAction(e);
         MyImage loadedImage = getMyImage(this.view.getImageCaptionLabel().getText());
         this.model.loadImage(loadedImage, "image");
-        this.view.changeCurrentImage(getBufferedImage(this.model.getCurrentImage()));
+        this.view.changeCurrentImage(getBufferedImage(this.model.getImageNamed("image")));
         this.view.refresh();
         try {
           this.view.renderMessage("Image loaded in successfully!");
@@ -59,7 +58,7 @@ public class ImageProcessingFeaturesControllerImpl implements ImageProcessingFea
     this.view.getSaveButton().addActionListener(e -> {
       try {
         this.view.buttonAction(e);
-        MyImage loadedImage = this.model.getCurrentImage();
+        MyImage loadedImage = this.model.getImageNamed("image");
         String filePath = this.view.getImageCaptionLabel().getText();
         this.writeImage(loadedImage, filePath);
       }
@@ -87,7 +86,7 @@ public class ImageProcessingFeaturesControllerImpl implements ImageProcessingFea
         }
         this.delegateController = new ImageProcessingControllerImpl(model, view, this.inputs);
         this.delegateController.execute();
-        this.view.changeCurrentImage(getBufferedImage(this.model.getCurrentImage()));
+        this.view.changeCurrentImage(getBufferedImage(this.model.getImageNamed("image")));
         this.view.refresh();
       }
       else {
