@@ -3,7 +3,14 @@ package model;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import model.image.MyImage;
+import model.image.SimpleImage;
 import model.image.operations.BrightenImageOperation;
+import model.pixel.RGBAPixel;
+import model.pixel.TransparentPixel;
 
 import static org.junit.Assert.fail;
 
@@ -12,16 +19,32 @@ import static org.junit.Assert.fail;
  */
 public class ImageProcessingModelTest {
   private ImageProcessingModel model;
+  private MyImage testImage;
 
   @Before
   public void init() {
     model = new ImageProcessingModelImpl();
+
+    ArrayList<TransparentPixel> row1
+            = new ArrayList<TransparentPixel>(
+                    Arrays.asList(new RGBAPixel(200, 100, 30),
+                            new RGBAPixel(10, 0, 255)));
+    ArrayList<TransparentPixel> row2
+            = new ArrayList<TransparentPixel>(
+            Arrays.asList(new RGBAPixel(30, 240, 210),
+                    new RGBAPixel(0, 0, 0)));
+    ArrayList<ArrayList<TransparentPixel>> imageList
+            = new ArrayList<ArrayList<TransparentPixel>>(
+                    Arrays.asList(row1, row2));
+
+    testImage = new SimpleImage(imageList);
   }
 
   @Test
-  public void testValidLoadFilePPM() {
+  public void testValidLoad() {
+    model.loadImage(testImage, "image");
     try {
-      model.loadFile("res/Landscape.ppm", "land");
+      model.getImageNamed("image");
     }
     catch (IllegalArgumentException e) {
       fail("Exception thrown");
@@ -29,45 +52,21 @@ public class ImageProcessingModelTest {
   }
 
   @Test
-  public void testValidLoadFileJPG() {
+  public void testInValidLoad() {
     try {
-      model.loadFile("res/Landscape.jpg", "land");
+      model.loadImage(null, "image");
+      fail("Exception wasn't thrown");
     }
     catch (IllegalArgumentException e) {
-      fail("Exception thrown");
+      // exception thrown successfully
     }
-  }
-
-  @Test
-  public void testValidLoadFilePNG() {
-    try {
-      model.loadFile("res/Landscape.png", "land");
-    }
-    catch (IllegalArgumentException e) {
-      fail("Exception thrown");
-    }
-  }
-
-  @Test
-  public void testValidLoadFileBMP() {
-    try {
-      model.loadFile("res/Landscape.bmp", "land");
-    }
-    catch (IllegalArgumentException e) {
-      fail("Exception thrown");
-    }
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testInvalidLoadFile() {
-    model.loadFile("res/Landscape.txt", "land");
   }
 
   @Test
   public void testValidPerformAndSaveAs() {
     try {
-      model.loadFile("res/Landscape.ppm", "land");
-      model.performAndSaveAs("land", "land-bright",
+      model.loadImage(testImage, "image");
+      model.performAndSaveAs("image", "image-bright",
               new BrightenImageOperation(10));
     }
     catch (IllegalArgumentException e) {
@@ -78,86 +77,8 @@ public class ImageProcessingModelTest {
   @Test
   public void testInvalidPerformAndSaveAs() {
     try {
-      model.performAndSaveAs("land", "land-bright",
+      model.performAndSaveAs("image", "image-bright",
               new BrightenImageOperation(10));
-      fail("Exception wasn't thrown");
-    }
-    catch (IllegalArgumentException e) {
-      // exception successfully thrown
-    }
-  }
-
-  @Test
-  public void testValidSavePPM() {
-    try {
-      model.loadFile("res/Landscape.ppm", "land");
-      model.performAndSaveAs("land", "land-bright",
-              new BrightenImageOperation(10));
-      model.saveAs("res/Landscape-new.ppm", "land-bright");
-    }
-    catch (IllegalArgumentException e) {
-      fail("Exception thrown");
-    }
-  }
-
-  @Test
-  public void testInvalidSaveImage() {
-    try {
-      model.saveAs("res/sdfsd.ppm", "image");
-      fail("Exception wasn't thrown");
-    }
-    catch (IllegalArgumentException e) {
-      // exception successfully thrown
-    }
-  }
-
-  @Test
-  public void testValidSaveJPG() {
-    try {
-      model.loadFile("res/Landscape.ppm", "land");
-      model.performAndSaveAs("land", "land-bright",
-              new BrightenImageOperation(10));
-      model.saveAs("res/Landscape-new.jpg", "land-bright");
-
-    }
-    catch (IllegalArgumentException e) {
-      fail("Exception was thrown");
-    }
-  }
-
-  @Test
-  public void testValidSavePNG() {
-    try {
-      model.loadFile("res/Landscape.ppm", "land");
-      model.performAndSaveAs("land", "land-bright",
-              new BrightenImageOperation(10));
-      model.saveAs("res/Landscape-new.png", "land-bright");
-    }
-    catch (IllegalArgumentException e) {
-      fail("Exception was thrown");
-    }
-  }
-
-  @Test
-  public void testValidSaveBMP() {
-    try {
-      model.loadFile("res/Landscape.ppm", "land");
-      model.performAndSaveAs("land", "land-bright",
-              new BrightenImageOperation(10));
-      model.saveAs("res/Landscape-new.bmp", "land-bright");
-    }
-    catch (IllegalArgumentException e) {
-      fail("Exception was thrown");
-    }
-  }
-
-  @Test
-  public void testInvalidSave() {
-    try {
-      model.loadFile("res/Landscape.ppm", "land");
-      model.performAndSaveAs("land", "land-bright",
-              new BrightenImageOperation(10));
-      model.saveAs("res/Landscape-new.pdf", "land-bright");
       fail("Exception wasn't thrown");
     }
     catch (IllegalArgumentException e) {
@@ -168,10 +89,10 @@ public class ImageProcessingModelTest {
   @Test
   public void testGetImageNamed() {
     try {
-      model.loadFile("res/Landscape.ppm", "land");
-      model.performAndSaveAs("land", "land-bright",
+      model.loadImage(testImage, "image");
+      model.performAndSaveAs("image", "image-bright",
               new BrightenImageOperation(10));
-      model.getImageNamed("land");
+      model.getImageNamed("image");
     }
     catch (IllegalArgumentException e) {
       fail("Exception thrown");

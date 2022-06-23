@@ -40,7 +40,7 @@ public class ImageProcessingApplication {
         try {
           in = new BufferedReader( new InputStreamReader(new FileInputStream(new File(args[1]))));
         }
-        catch (FileNotFoundException e){
+        catch (FileNotFoundException e) {
           System.err.println("Cannot load the desired file.");
           in = new InputStreamReader(System.in);
         }

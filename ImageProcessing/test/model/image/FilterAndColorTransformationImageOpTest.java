@@ -17,123 +17,103 @@ import model.pixel.TransparentPixel;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * A JUnit test class for ImageOperation interface (for the new filter and color transformation
+ * operations).
+ */
 public class FilterAndColorTransformationImageOpTest {
-  private TransparentPixel pixel1;
-  private TransparentPixel pixel2;
-  private TransparentPixel pixel3;
-  private TransparentPixel pixel4;
-  private TransparentPixel pixel5;
-  private TransparentPixel pixel6;
-  private TransparentPixel pixel7;
-  private TransparentPixel pixel8;
-  private TransparentPixel pixel9;
-  private TransparentPixel pixel10;
-  private TransparentPixel pixel11;
-  private TransparentPixel pixel12;
-  private TransparentPixel pixel13;
-  private TransparentPixel pixel14;
-  private TransparentPixel pixel15;
-  private TransparentPixel pixel16;
-  private TransparentPixel pixel17;
-  private TransparentPixel pixel18;
-  private TransparentPixel pixel19;
-  private TransparentPixel pixel20;
-  private TransparentPixel pixel21;
-  private TransparentPixel pixel22;
-  private TransparentPixel pixel23;
-  private TransparentPixel pixel24;
-  private TransparentPixel pixel25;
-
-  private ArrayList<TransparentPixel> subImage1;
-  private ArrayList<TransparentPixel> subImage2;
-  private ArrayList<TransparentPixel> subImage3;
-  private ArrayList<TransparentPixel> subImage4;
-  private ArrayList<TransparentPixel> subImage5;
-  private ArrayList<TransparentPixel> subImage6;
-  private ArrayList<TransparentPixel> subImage7;
-  private ArrayList<TransparentPixel> subImage8;
-
-  private ArrayList<ArrayList<TransparentPixel>> image;
-  private ArrayList<ArrayList<TransparentPixel>> image2;
-
   private MyImage simpleImage;
   private MyImage simpleImage2;
-
 
   @Before
   public void init() {
 
-    this.pixel1 = new RGBAPixel(200, 100, 40);
+    TransparentPixel pixel1 = new RGBAPixel(200, 100, 40);
 
-    this.pixel2 = new RGBAPixel(100, 40, 200);
+    TransparentPixel pixel2 = new RGBAPixel(100, 40, 200);
 
-    this.pixel3 = new RGBAPixel(40, 200, 100);
+    TransparentPixel pixel3 = new RGBAPixel(40, 200, 100);
 
-    this.pixel4 = new RGBAPixel(50, 20, 100);
+    TransparentPixel pixel4 = new RGBAPixel(50, 20, 100);
 
-    this.pixel5 = new RGBAPixel(20, 100, 50);
+    TransparentPixel pixel5 = new RGBAPixel(20, 100, 50);
 
-    this.pixel6 = new RGBAPixel(100, 50, 20);
+    TransparentPixel pixel6 = new RGBAPixel(100, 50, 20);
 
-    this.pixel7 = new RGBAPixel(150, 90, 250);
+    TransparentPixel pixel7 = new RGBAPixel(150, 90, 250);
 
-    this.pixel8 = new RGBAPixel(90, 250, 150);
+    TransparentPixel pixel8 = new RGBAPixel(90, 250, 150);
 
-    this.pixel9 = new RGBAPixel(250, 150, 90);
+    TransparentPixel pixel9 = new RGBAPixel(250, 150, 90);
 
-    this.pixel10 = new RGBAPixel(70, 80, 90);
+    TransparentPixel pixel10 = new RGBAPixel(70, 80, 90);
 
-    this.pixel11 = new RGBAPixel(90, 70, 80);
+    TransparentPixel pixel11 = new RGBAPixel(90, 70, 80);
 
-    this.pixel12 = new RGBAPixel(80, 90, 70);
+    TransparentPixel pixel12 = new RGBAPixel(80, 90, 70);
 
-    this.pixel13 = new RGBAPixel(110, 89, 43);
+    TransparentPixel pixel13 = new RGBAPixel(110, 89, 43);
 
-    this.pixel14 = new RGBAPixel(89, 43, 110);
+    TransparentPixel pixel14 = new RGBAPixel(89, 43, 110);
 
-    this.pixel15 = new RGBAPixel(43, 110, 89);
+    TransparentPixel pixel15 = new RGBAPixel(43, 110, 89);
 
-    this.pixel16 = new RGBAPixel(205, 1, 50);
+    TransparentPixel pixel16 = new RGBAPixel(205, 1, 50);
 
-    this.pixel17 = new RGBAPixel(1, 50, 205);
+    TransparentPixel pixel17 = new RGBAPixel(1, 50, 205);
 
-    this.pixel18 = new RGBAPixel(50, 205, 1);
+    TransparentPixel pixel18 = new RGBAPixel(50, 205, 1);
 
-    this.pixel19 = new RGBAPixel(19, 20, 85);
+    TransparentPixel pixel19 = new RGBAPixel(19, 20, 85);
 
-    this.pixel20 = new RGBAPixel(20, 85, 19);
+    TransparentPixel pixel20 = new RGBAPixel(20, 85, 19);
 
-    this.pixel21 = new RGBAPixel(85, 19, 20);
+    TransparentPixel pixel21 = new RGBAPixel(85, 19, 20);
 
-    this.pixel22 = new RGBAPixel(55, 158, 240);
+    TransparentPixel pixel22 = new RGBAPixel(55, 158, 240);
 
-    this.pixel23 = new RGBAPixel(158, 240, 55);
+    TransparentPixel pixel23 = new RGBAPixel(158, 240, 55);
 
-    this.pixel24 = new RGBAPixel(240, 55, 158);
+    TransparentPixel pixel24 = new RGBAPixel(240, 55, 158);
 
-    this.pixel25 = new RGBAPixel(99, 7, 13);
+    TransparentPixel pixel25 = new RGBAPixel(99, 7, 13);
 
-    this.subImage1 = new ArrayList<>(Arrays.asList(pixel1, pixel2, pixel3));
+    ArrayList<TransparentPixel> subImage1
+            = new ArrayList<TransparentPixel>(Arrays.asList(pixel1, pixel2, pixel3));
 
-    this.subImage2 = new ArrayList<>(Arrays.asList(pixel4, pixel5, pixel6));
+    ArrayList<TransparentPixel> subImage2
+            = new ArrayList<TransparentPixel>(Arrays.asList(pixel4, pixel5, pixel6));
 
-    this.subImage3 = new ArrayList<>(Arrays.asList(pixel7, pixel8, pixel9));
+    ArrayList<TransparentPixel> subImage3
+            = new ArrayList<TransparentPixel>(Arrays.asList(pixel7, pixel8, pixel9));
 
-    this.subImage4 = new ArrayList<>(Arrays.asList(pixel1, pixel2, pixel3, pixel4, pixel5));
+    ArrayList<TransparentPixel> subImage4
+            = new ArrayList<TransparentPixel>(
+                    Arrays.asList(pixel1, pixel2, pixel3, pixel4, pixel5));
 
-    this.subImage5 = new ArrayList<>(Arrays.asList(pixel6, pixel7, pixel8, pixel9, pixel10));
+    ArrayList<TransparentPixel> subImage5
+            = new ArrayList<TransparentPixel>(
+                    Arrays.asList(pixel6, pixel7, pixel8, pixel9, pixel10));
 
-    this.subImage6 = new ArrayList<>(Arrays.asList(pixel11, pixel12, pixel13, pixel14, pixel15));
+    ArrayList<TransparentPixel> subImage6
+            = new ArrayList<TransparentPixel>(
+                    Arrays.asList(pixel11, pixel12, pixel13, pixel14, pixel15));
 
-    this.subImage7 = new ArrayList<>(Arrays.asList(pixel16, pixel17, pixel18, pixel19, pixel20));
+    ArrayList<TransparentPixel> subImage7
+            = new ArrayList<TransparentPixel>(
+                    Arrays.asList(pixel16, pixel17, pixel18, pixel19, pixel20));
 
-    this.subImage8 = new ArrayList<>(Arrays.asList(pixel21, pixel22, pixel23, pixel24, pixel25));
+    ArrayList<TransparentPixel> subImage8
+            = new ArrayList<TransparentPixel>(
+                    Arrays.asList(pixel21, pixel22, pixel23, pixel24, pixel25));
 
-    this.image = new ArrayList<ArrayList<TransparentPixel>>
-            (Arrays.asList(subImage1, subImage2, subImage3));
+    ArrayList<ArrayList<TransparentPixel>> image
+            = new ArrayList<ArrayList<TransparentPixel>>(
+                    Arrays.asList(subImage1, subImage2, subImage3));
 
-    this.image2 = new ArrayList<ArrayList<TransparentPixel>>
-            (Arrays.asList(subImage4, subImage5, subImage6, subImage7, subImage8));
+    ArrayList<ArrayList<TransparentPixel>> image2
+            = new ArrayList<ArrayList<TransparentPixel>>(
+                    Arrays.asList(subImage4, subImage5, subImage6, subImage7, subImage8));
 
     this.simpleImage = new SimpleImage(image);
 
@@ -404,7 +384,5 @@ public class FilterAndColorTransformationImageOpTest {
     assertEquals(112, this.simpleImage2.getPixelAt(4, 4).getRed());
     assertEquals(0, this.simpleImage2.getPixelAt(4,4).getGreen());
     assertEquals(41, this.simpleImage2.getPixelAt(4, 4).getBlue());
-
   }
-
 }

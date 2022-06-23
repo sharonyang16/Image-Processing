@@ -4,11 +4,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import model.image.MyImage;
+import model.image.SimpleImage;
 import model.pixel.Pixel;
+import model.pixel.RGBAPixel;
+import model.pixel.TransparentPixel;
 import view.ImageProcessingTextView;
 import view.ImageProcessingView;
 import view.MockAppendable;
@@ -27,6 +32,7 @@ public class ImageProcessingControllerTest {
   private ImageProcessingModel model;
   private Readable in;
   private Appendable out;
+  private MyImage testImage;
 
   // the initial conditions for the ImageProcessingController and it's parts
   @Before
@@ -36,6 +42,20 @@ public class ImageProcessingControllerTest {
     model = new ImageProcessingModelImpl();
     view = new ImageProcessingTextView(out);
     controller = new ImageProcessingControllerImpl(model, view, in);
+
+    ArrayList<TransparentPixel> row1
+            = new ArrayList<TransparentPixel>(
+            Arrays.asList(new RGBAPixel(200, 100, 30),
+                    new RGBAPixel(10, 0, 255)));
+    ArrayList<TransparentPixel> row2
+            = new ArrayList<TransparentPixel>(
+            Arrays.asList(new RGBAPixel(30, 240, 210),
+                    new RGBAPixel(0, 0, 0)));
+    ArrayList<ArrayList<TransparentPixel>> imageList
+            = new ArrayList<ArrayList<TransparentPixel>>(
+            Arrays.asList(row1, row2));
+
+    testImage = new SimpleImage(imageList);
   }
 
   // to test creating a valid ImageProcessingControllerImpl object
@@ -183,13 +203,16 @@ public class ImageProcessingControllerTest {
 
   @Test
   public void testExecuteLoadInvalid() {
+    // load invalid format
     setInputs("load res/Landscape.txt landscape");
 
     String outString = out.toString();
 
     // renders this message as it's provided a txt file
-    assertTrue(outString.contains("Command unsuccessful! Unsupported file type!"));
+    assertTrue(outString.contains("Command unsuccessful!"));
+    assertTrue(outString.contains("Unable to read res/Landscape.txt."));
 
+    // load invalid file path
     setInputs("load abc.ppm landscape");
 
     outString = out.toString();
@@ -432,8 +455,8 @@ public class ImageProcessingControllerTest {
 
   @Test
   public void testExecuteSavePPM() {
-    setInputs("load res/Landscape.ppm landscape luma-greyscale landscape red "
-            + "save res/Landscape-luma.ppm luma-greyscale");
+    setInputs("load res/Landscape.ppm landscape value-greyscale landscape value "
+            + "save res/Landscape-luma.ppm value");
 
     String outString = out.toString();
 
@@ -447,7 +470,7 @@ public class ImageProcessingControllerTest {
 
   @Test
   public void testExecuteSaveJPG() {
-    setInputs("load res/Landscape.ppm landscape luma-greyscale landscape red "
+    setInputs("load res/Landscape.ppm landscape luma-greyscale landscape luma-greyscale "
             + "save res/Landscape-luma.jpg luma-greyscale");
 
     String outString = out.toString();
@@ -462,8 +485,8 @@ public class ImageProcessingControllerTest {
 
   @Test
   public void testExecuteSavePNG() {
-    setInputs("load res/Landscape.bmp landscape luma-greyscale landscape red "
-            + "save res/Landscape-luma.png luma-greyscale");
+    setInputs("load res/Landscape.bmp landscape red-greyscale landscape red "
+            + "save res/Landscape-luma.png red");
 
     String outString = out.toString();
 
@@ -477,8 +500,8 @@ public class ImageProcessingControllerTest {
 
   @Test
   public void testExecuteSaveBMP() {
-    setInputs("load res/Landscape.jpg landscape luma-greyscale landscape red "
-            + "save res/Landscape-luma.bmp luma-greyscale");
+    setInputs("load res/Landscape.jpg landscape blue-greyscale landscape blue "
+            + "save res/Landscape-luma.bmp blue");
 
     String outString = out.toString();
 
@@ -543,6 +566,31 @@ public class ImageProcessingControllerTest {
     String outString = out.toString();
 
     assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used flip-horizontally on image)"));
+    assertTrue(outString.contains("(used flip-vertically on image)"));
+    assertFalse(outString.contains("Command unsuccessful!"));
+  }
+
+  @Test
+  public void testExecuteFilter() {
+    setInputs("load res/Landscape.png landscape blur landscape blur-landscape "
+            + "sharpen landscape sharp-landscape");
+
+    // should not throw an exception since they're all properly loaded into the model
+    try {
+      model.getImageNamed("landscape");
+      model.getImageNamed("blur-landscape");
+      model.getImageNamed("sharp-landscape");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+
+    String outString = out.toString();
+
+    assertTrue(outString.contains("Command successful!"));
+    assertTrue(outString.contains("(used blur on image)"));
+    assertTrue(outString.contains("(used sharpen on image)"));
     assertFalse(outString.contains("Command unsuccessful!"));
   }
 
@@ -589,6 +637,83 @@ public class ImageProcessingControllerTest {
     }
     catch (IllegalArgumentException e) {
       fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testValidGetMyImagePPM() {
+    try {
+      controller.getMyImage("res/Landscape.ppm");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testValidGetMyImageJPG() {
+    try {
+      controller.getMyImage("res/Landscape.jpg");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testValidGetMyImagePNG() {
+    try {
+      controller.getMyImage("res/Landscape.png");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testValidGetMyImageBMP() {
+    try {
+      controller.getMyImage("res/Landscape.bmp");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testInvalidGetMyImage() {
+    try {
+      // should throw an exception since it's unsupported file format
+      // and doesn't exist
+      controller.getMyImage("res/Landscape.txt");
+      fail("Exception wasn't thrown");
+    }
+    catch (IllegalArgumentException e) {
+      // exception successfully thrown
+    }
+  }
+
+  @Test
+  public void testValidWriteImage() {
+    try {
+      controller.writeImage(testImage, "res/test.ppm");
+      controller.writeImage(testImage, "res/test.jpg");
+      controller.writeImage(testImage, "res/test.png");
+      controller.writeImage(testImage, "res/test.bmp");
+    }
+    catch (IllegalArgumentException e) {
+      fail("Exception thrown");
+    }
+  }
+
+  @Test
+  public void testInvalidWriteImage() {
+    try {
+      controller.writeImage(testImage, "1");
+      fail("Exception wasn't thrown");
+    }
+    catch (IllegalArgumentException e) {
+      // exception successfully thrown
     }
   }
 }

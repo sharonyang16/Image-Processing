@@ -30,7 +30,17 @@ and we had to change the design of MyImage (interface) and SimpleImage (class) t
 than Pixel objects. Images loaded in without an alpha component would just be opaque (their alpha component set to 255 for 8-bit). When 
 reading and writing images, the images would not be able to read or write the alpha component without changing the fact that a MyImage object
 should represnt a collection of TransparentPixel objects. Creating a new interface and class to represent images that support transparency would
-mean the operations that extend ImageOperation would not work for this new interface and class. So now all of the images loaded into the model are saved as SimpleImage objects which holds a 2D ArrayList of TransparentPixel objects and the images that are loaded in from file formats that don't support the alpha channel have all their pixel's alpha components set to 255 (a constructor for RGBAPixel was written for this case).
+mean the operations that extend ImageOperation would not work for this new interface and class. So now all of the images loaded into the model
+are saved as SimpleImage objects which holds a 2D ArrayList of TransparentPixel objects and the images that are loaded in from file formats that
+don't support the alpha channel have all their pixel's alpha components set to 255 (a constructor for RGBAPixel was written for this case).
 
 An extra sentence was added after the "Command successful!" message in the controller after successfully completing commands to better the
 user experience by confirming what command was just executed (it's especially helpful when running the program with a script file).
+
+The reading and writing of files were moved to the controller so it would better follow the MVC pattern. Two methods (getMyImage and writeImage)
+were added to the controller interface and implemented in the controller class for this to work. Additionally, saveAs and loadFile were both
+deleted from the model interface and controller and a new method was added (loadImage) and an old method that was already there (getImageNamed) are
+used alongside the new methods in the controller to make this work. The Save and Load classes (both implmenet ImageProcessingCommand interface) 
+were changed so that they would both have a fields of an ImageProcessingController so they could execute the commands properly; for load it uses
+the getMyImage method from the controller first and gives it to the model to use in loadImage and for save it uses the getImageNamed method from the 
+model first and then uses the writeImage method from the controller to complete the writing of the file.
