@@ -6,8 +6,8 @@ This is an image processing application developed for CS3500 - Object Oriented D
 
 This app was created using
 
-- Java
-- JUnit
+- Java (Java 11+)
+- JUnit (JUnit4)
 - JavaSwing
 
 ## Design 
