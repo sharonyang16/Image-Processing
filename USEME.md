@@ -3,6 +3,8 @@
 ## Running the Program
 This program can be ran in a text based format, either by running the program and typing commands into the terminal or by running the program and giving it a script file, or through a GUI.
 
+*Note: This application requires Java 11+ to run!*
+
 ## Text based Version
 To run the text based version of the application, `cd` into the directory with `ImageProcessing.jar` and enter `java -jar ImageProcessing.jar`. To run the text based version with a script file, enter `java -jar ImageProcessing.jar -file [path-to-your-script-file.txt]`. If an invalid file is provided, the program will
 automatically resort to running the regular text based version.
