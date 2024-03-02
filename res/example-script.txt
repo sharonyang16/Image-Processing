@@ -1,0 +1,45 @@
+load .\Landscape.ppm landscape-ppm
+
+load .\Landscape.jpg landscape-jpg
+
+load .\Landscape.png landscape-png
+ 
+load .\Landscape.bmp landscape-bmp
+
+red-greyscale landscape-ppm landscape-red-grey
+
+green-greyscale landscape-bmp landscape-green-grey 
+
+blue-greyscale landscape-jpg landscape-blue-grey 
+
+value-greyscale landscape-png landscape-value-grey 
+
+intensity-greyscale landscape-ppm landscape-intensity-grey 
+
+luma-greyscale landscape-bmp landscape-luma-grey 
+
+flip-horizontally landscape-jpg landscape-hor-flip 
+
+flip-vertically landscape-bmp landscape-vert-flip
+
+brighten landscape-png landscape-bright-50 50
+
+darken landscape-ppm landscape-dark-50 50 
+
+blur landscape-bmp landscape-blur
+
+sharpen landscape-jpg landscape-sharp
+
+greyscale landscape-png landscape-grey
+
+sepia landscape-ppm landscape-sepia
+
+save .\example-blur.ppm landscape-blur
+
+save .\example-sharp.png landscape-sharp
+
+save .\example-vert-flip.jpg landscape-vert-flip
+
+save .\example-grey.bmp landscape-grey
+
+quit
